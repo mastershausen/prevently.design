@@ -123,7 +123,7 @@ export default function BubbleScreen() {
         </TouchableOpacity>
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitle}>Prevently</Text>
-          <Text style={styles.headerSubtitle}>Deine Gesundheit im Fokus</Text>
+          <Text style={styles.headerSubtitle}>Krankheiten vermeiden, statt sie zu heilen.</Text>
         </View>
         <View style={styles.headerSpacer} />
       </View>
@@ -169,15 +169,20 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: Colors.text.dark,
+    color: '#1A5D5D',
+    textAlign: 'center',
+    marginBottom: 8,
+    letterSpacing: 0.5,
   },
   headerSubtitle: {
-    fontSize: 16,
-    color: Colors.gray.medium,
-    marginTop: 5,
+    fontSize: 14,
+    color: Colors.text.secondary,
+    textAlign: 'center',
+    fontWeight: '500',
+    lineHeight: 18,
   },
   headerSpacer: {
-    width: 44, // Same width as chevronButton to center the title
+    width: 36,
   },
   bubblesContainer: {
     flex: 1,
