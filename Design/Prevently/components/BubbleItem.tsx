@@ -3,10 +3,12 @@ import {
   TouchableOpacity, 
   Text, 
   StyleSheet, 
-  Dimensions 
+  Dimensions,
+  View
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
+import Colors from '../constants/Colors';
 
 const { width, height } = Dimensions.get('window');
 
@@ -14,6 +16,7 @@ export interface BubbleData {
   id: number;
   title: string;
   color: string;
+  textColor?: string;
   size: 'large' | 'medium' | 'small';
   position: { x: number; y: number };
 }
@@ -50,27 +53,41 @@ const BubbleItem: React.FC<BubbleItemProps> = ({ bubble, onPress }) => {
         }
       ]}
       onPress={() => onPress(bubble)}
-      activeOpacity={0.8}
+      activeOpacity={0.9}
     >
       <BlurView 
-        intensity={15} 
+        intensity={40} 
         tint="light"
         style={[styles.glassContainer, bubbleSize]}
       >
         <LinearGradient
           colors={[
-            `${bubble.color}40`,
-            `${bubble.color}20`,
-            `${bubble.color}10`
+            `${bubble.color}FF`,
+            `${bubble.color}F0`,
+            `${bubble.color}E0`
           ]}
-          style={[styles.gradientOverlay, bubbleSize]}
+          style={[styles.colorGradient, bubbleSize]}
         >
-          <Text style={[
-            styles.bubbleTitle, 
-            { fontSize: bubble.size === 'large' ? 16 : bubble.size === 'medium' ? 14 : 12 }
-          ]}>
-            {bubble.title}
-          </Text>
+          <LinearGradient
+            colors={[
+              'rgba(255, 255, 255, 0.4)',
+              'rgba(255, 255, 255, 0.2)',
+              'rgba(255, 255, 255, 0.0)'
+            ]}
+            style={[styles.topReflection, bubbleSize]}
+          />
+          
+          <View style={styles.textContainer}>
+            <Text style={[
+              styles.bubbleTitle, 
+              { 
+                fontSize: bubble.size === 'large' ? 16 : bubble.size === 'medium' ? 14 : 12,
+                color: bubble.textColor || '#2D3436'
+              }
+            ]}>
+              {bubble.title}
+            </Text>
+          </View>
         </LinearGradient>
       </BlurView>
     </TouchableOpacity>
@@ -79,36 +96,46 @@ const BubbleItem: React.FC<BubbleItemProps> = ({ bubble, onPress }) => {
 
 const styles = StyleSheet.create({
   bubbleContainer: {
-    zIndex: 1,
-  },
-  glassContainer: {
-    borderRadius: 100,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.15,
-    shadowRadius: 12,
+    shadowRadius: 16,
     elevation: 8,
   },
-  gradientOverlay: {
-    borderRadius: 100,
+  glassContainer: {
+    borderRadius: 1000,
+    overflow: 'hidden',
+    borderWidth: 0.5,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  colorGradient: {
+    borderRadius: 1000,
+    flex: 1,
+    position: 'relative',
+  },
+  topReflection: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '50%',
+    borderRadius: 1000,
+  },
+  textContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 8,
   },
   bubbleTitle: {
-    color: 'white',
     fontWeight: '600',
     textAlign: 'center',
     lineHeight: 18,
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
   },
 });
 

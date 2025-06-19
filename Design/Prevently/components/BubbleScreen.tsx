@@ -11,77 +11,88 @@ import { LinearGradient } from 'expo-linear-gradient';
 import BubbleItem, { BubbleData } from './BubbleItem';
 import Sidebar from './Sidebar';
 import { IconSymbol } from './ui/IconSymbol';
+import Colors from '../constants/Colors';
 
 const bubbleData: BubbleData[] = [
   {
     id: 1,
     title: 'Ernährung &\nSupplemente',
-    color: '#FF6B6B',
+    color: Colors.health.nutrition.bubble,
+    textColor: Colors.health.nutrition.text,
     size: 'large',
     position: { x: 0.15, y: 0.12 }
   },
   {
     id: 2,
     title: 'Bewegung &\nFitness',
-    color: '#4ECDC4',
+    color: Colors.health.fitness.bubble,
+    textColor: Colors.health.fitness.text,
     size: 'medium',
     position: { x: 0.65, y: 0.08 }
   },
   {
     id: 3,
     title: 'Schlaf &\nErholung',
-    color: '#45B7D1',
+    color: Colors.health.sleep.bubble,
+    textColor: Colors.health.sleep.text,
     size: 'medium',
     position: { x: 0.25, y: 0.35 }
   },
   {
     id: 4,
     title: 'Haut &\nHaare',
-    color: '#96CEB4',
+    color: Colors.health.skin.bubble,
+    textColor: Colors.health.skin.text,
     size: 'small',
     position: { x: 0.75, y: 0.32 }
   },
   {
     id: 5,
-    title: 'Zahngesundheit',
-    color: '#FECA57',
+    title: 'Zahn-\ngesundheit',
+    color: Colors.health.dental.bubble,
+    textColor: Colors.health.dental.text,
     size: 'small',
-    position: { x: 0.1, y: 0.55 }
+    position: { x: 0.05, y: 0.58 }
   },
   {
     id: 6,
     title: 'Darm &\nVerdauung',
-    color: '#FF9FF3',
+    color: Colors.health.digestion.bubble,
+    textColor: Colors.health.digestion.text,
     size: 'medium',
-    position: { x: 0.6, y: 0.55 }
+    position: { x: 0.45, y: 0.52 }
   },
   {
     id: 7,
     title: 'Hormone &\nStoffwechsel',
-    color: '#54A0FF',
-    size: 'large',
-    position: { x: 0.2, y: 0.75 }
+    color: Colors.health.hormones.bubble,
+    textColor: Colors.health.hormones.text,
+    size: 'small',
+    position: { x: 0.8, y: 0.58 }
   },
   {
     id: 8,
-    title: 'Immunsystem\n& Infekte',
-    color: '#5F27CD',
-    size: 'small',
-    position: { x: 0.75, y: 0.75 }
+    title: 'Immunsystem &\nInfekte',
+    color: Colors.health.immune.bubble,
+    textColor: Colors.health.immune.text,
+    size: 'medium',
+    position: { x: 0.15, y: 0.78 }
   },
   {
     id: 9,
     title: 'Psyche &\nStressbewältigung',
-    color: '#00D2D3',
-    size: 'medium',
-    position: { x: 0.35, y: 0.92 }
+    color: Colors.health.mental.bubble,
+    textColor: Colors.health.mental.text,
+    size: 'large',
+    position: { x: 0.55, y: 0.75 }
   },
   {
     id: 10,
-    title: 'Krebsvorsorge\n& Check-ups',
-    color: '#FF6348',
+    title: 'Krebsvorsorge &\nCheck-ups',
+    color: Colors.health.prevention.bubble,
+    textColor: Colors.health.prevention.text,
     size: 'small',
-    position: { x: 0.1, y: 0.05 }
+    position: { x: 0.35, y: 0.95 }
   }
 ];
 
@@ -103,18 +114,12 @@ export default function BubbleScreen() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
-      
-      {/* Hintergrund Gradient */}
-      <LinearGradient
-        colors={['#667eea', '#764ba2', '#f093fb']}
-        style={styles.backgroundGradient}
-      />
+      <StatusBar barStyle="dark-content" />
       
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={openSidebar} style={styles.menuButton}>
-          <IconSymbol name="line.3.horizontal" size={24} color="white" />
+        <TouchableOpacity onPress={openSidebar} style={styles.chevronButton}>
+          <IconSymbol name="chevron.left" size={20} color={Colors.text.dark} />
         </TouchableOpacity>
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitle}>Prevently</Text>
@@ -134,11 +139,6 @@ export default function BubbleScreen() {
         ))}
       </View>
       
-      {/* Footer */}
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>Wähle einen Bereich aus</Text>
-      </View>
-      
       {/* Sidebar */}
       <Sidebar isVisible={sidebarVisible} onClose={closeSidebar} />
     </View>
@@ -148,13 +148,7 @@ export default function BubbleScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  backgroundGradient: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+    backgroundColor: Colors.white,
   },
   header: {
     paddingTop: Platform.OS === 'ios' ? 60 : 40,
@@ -165,20 +159,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     zIndex: 10,
   },
-  menuButton: {
-    padding: 12,
-    borderRadius: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+  chevronButton: {
+    padding: 8,
   },
   headerTitleContainer: {
     alignItems: 'center',
@@ -187,37 +169,18 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: 'white',
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
+    color: Colors.text.dark,
   },
   headerSubtitle: {
     fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: Colors.gray.medium,
     marginTop: 5,
-    textShadowColor: 'rgba(0, 0, 0, 0.2)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
   },
   headerSpacer: {
-    width: 48, // Same width as menuButton to center the title
+    width: 44, // Same width as chevronButton to center the title
   },
   bubblesContainer: {
     flex: 1,
     position: 'relative',
-  },
-  footer: {
-    paddingBottom: Platform.OS === 'ios' ? 40 : 20,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-    zIndex: 10,
-  },
-  footerText: {
-    fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.8)',
-    textShadowColor: 'rgba(0, 0, 0, 0.2)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
   },
 }); 

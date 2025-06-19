@@ -11,6 +11,7 @@ import {
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { IconSymbol } from './ui/IconSymbol';
+import Colors from '../constants/Colors';
 
 const { width, height } = Dimensions.get('window');
 
@@ -82,7 +83,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isVisible, onClose }) => {
       <View style={styles.sidebarContainer}>
         <BlurView intensity={20} tint="dark" style={styles.sidebarBlur}>
           <LinearGradient
-            colors={['rgba(103, 126, 234, 0.3)', 'rgba(118, 75, 162, 0.3)', 'rgba(240, 147, 251, 0.3)']}
+            colors={Colors.gradients.sidebar}
             style={styles.sidebarGradient}
           >
             <SafeAreaView style={styles.sidebarContent}>
