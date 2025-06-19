@@ -77,6 +77,14 @@ const BubbleItem: React.FC<BubbleItemProps> = ({ bubble, onPress }) => {
             style={[styles.topReflection, bubbleSize]}
           />
           
+          <LinearGradient
+            colors={[
+              'rgba(255, 255, 255, 0.6)',
+              'rgba(255, 255, 255, 0.0)'
+            ]}
+            style={[styles.topHighlight, bubbleSize]}
+          />
+          
           <View style={styles.textContainer}>
             <Text style={[
               styles.bubbleTitle, 
@@ -97,30 +105,48 @@ const BubbleItem: React.FC<BubbleItemProps> = ({ bubble, onPress }) => {
 const styles = StyleSheet.create({
   bubbleContainer: {
     shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.15,
-    shadowRadius: 16,
-    elevation: 8,
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.25,
+    shadowRadius: 24,
+    elevation: 16,
   },
   glassContainer: {
     borderRadius: 1000,
     overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.4)',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    shadowColor: 'rgba(0, 0, 0, 0.1)',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 4,
   },
   colorGradient: {
     borderRadius: 1000,
     flex: 1,
     position: 'relative',
+    shadowColor: 'rgba(0, 0, 0, 0.05)',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 2,
   },
   topReflection: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    height: '50%',
+    height: '60%',
     borderRadius: 1000,
+    opacity: 0.8,
+  },
+  topHighlight: {
+    position: 'absolute',
+    top: 2,
+    left: 2,
+    right: 2,
+    height: '25%',
+    borderRadius: 1000,
+    opacity: 0.9,
   },
   textContainer: {
     position: 'absolute',
@@ -136,6 +162,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
     lineHeight: 16,
+    textShadowColor: 'rgba(255, 255, 255, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
 });
 
