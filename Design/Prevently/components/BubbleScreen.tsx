@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   View, 
   Text, 
   StyleSheet, 
   StatusBar,
-  Platform
+  Platform,
+  TouchableOpacity
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import BubbleItem, { BubbleData } from './BubbleItem';
+import Sidebar from './Sidebar';
+import { IconSymbol } from './ui/IconSymbol';
 
 const bubbleData: BubbleData[] = [
   {
@@ -83,9 +86,19 @@ const bubbleData: BubbleData[] = [
 ];
 
 export default function BubbleScreen() {
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+
   const handleBubblePress = (bubble: BubbleData) => {
     console.log(`Bubble pressed: ${bubble.title}`);
     // Hier später Navigation zu Detail-Screen
+  };
+
+  const openSidebar = () => {
+    setSidebarVisible(true);
+  };
+
+  const closeSidebar = () => {
+    setSidebarVisible(false);
   };
 
   return (
@@ -100,8 +113,14 @@ export default function BubbleScreen() {
       
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Prevently</Text>
-        <Text style={styles.headerSubtitle}>Deine Gesundheit im Fokus</Text>
+        <TouchableOpacity onPress={openSidebar} style={styles.menuButton}>
+          <IconSymbol name="line.3.horizontal" size={24} color="white" />
+        </TouchableOpacity>
+        <View style={styles.headerTitleContainer}>
+          <Text style={styles.headerTitle}>Prevently</Text>
+          <Text style={styles.headerSubtitle}>Deine Gesundheit im Fokus</Text>
+        </View>
+        <View style={styles.headerSpacer} />
       </View>
       
       {/* Bubbles Container */}
@@ -119,6 +138,9 @@ export default function BubbleScreen() {
       <View style={styles.footer}>
         <Text style={styles.footerText}>Wähle einen Bereich aus</Text>
       </View>
+      
+      {/* Sidebar */}
+      <Sidebar isVisible={sidebarVisible} onClose={closeSidebar} />
     </View>
   );
 }
@@ -138,8 +160,29 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'ios' ? 60 : 40,
     paddingHorizontal: 20,
     paddingBottom: 20,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     zIndex: 10,
+  },
+  menuButton: {
+    padding: 12,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  headerTitleContainer: {
+    alignItems: 'center',
+    flex: 1,
   },
   headerTitle: {
     fontSize: 32,
@@ -156,6 +199,9 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.2)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
+  },
+  headerSpacer: {
+    width: 48, // Same width as menuButton to center the title
   },
   bubblesContainer: {
     flex: 1,
