@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   View, 
   Text, 
   StyleSheet, 
   StatusBar,
   Platform,
-  TouchableOpacity
+  TouchableOpacity,
+  Animated
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import BubbleItem, { BubbleData } from './BubbleItem';
@@ -98,6 +99,50 @@ const bubbleData: BubbleData[] = [
 
 export default function BubbleScreen() {
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const titleFloatAnim = useRef(new Animated.Value(0)).current;
+  const titleScaleAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    // Schwebeanimation für den Titel
+    const floatAnimation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(titleFloatAnim, {
+          toValue: 1,
+          duration: 3000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(titleFloatAnim, {
+          toValue: 0,
+          duration: 3000,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    // Pulsierende Skalierung
+    const scaleAnimation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(titleScaleAnim, {
+          toValue: 1.02,
+          duration: 4000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(titleScaleAnim, {
+          toValue: 1,
+          duration: 4000,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    floatAnimation.start();
+    scaleAnimation.start();
+
+    return () => {
+      floatAnimation.stop();
+      scaleAnimation.stop();
+    };
+  }, [titleFloatAnim, titleScaleAnim]);
 
   const handleBubblePress = (bubble: BubbleData) => {
     console.log(`Bubble pressed: ${bubble.title}`);
@@ -118,14 +163,42 @@ export default function BubbleScreen() {
       
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={openSidebar} style={styles.chevronButton}>
-          <IconSymbol name="chevron.left" size={20} color={Colors.text.dark} />
-        </TouchableOpacity>
-        <View style={styles.headerTitleContainer}>
-          <Text style={styles.headerTitle}>Prevently</Text>
+        {/* Erste Zeile: Chevron, Titel mittig, Spacer */}
+        <View style={styles.titleRow}>
+          <TouchableOpacity onPress={openSidebar} style={styles.chevronButton}>
+            <IconSymbol name="chevron.left" size={20} color={Colors.text.dark} />
+          </TouchableOpacity>
+          
+          <View style={styles.titleContainer}>
+            <Animated.View
+              style={[
+                styles.titleWrapper,
+                {
+                  transform: [
+                    {
+                      translateY: titleFloatAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, -3],
+                      }),
+                    },
+                    {
+                      scale: titleScaleAnim,
+                    },
+                  ],
+                },
+              ]}
+            >
+              <Text style={styles.headerTitle}>Prevently</Text>
+            </Animated.View>
+          </View>
+          
+          <View style={styles.headerSpacer} />
+        </View>
+        
+        {/* Zweite Zeile: Untertitel zentriert */}
+        <View style={styles.subtitleContainer}>
           <Text style={styles.headerSubtitle}>Krankheiten vermeiden, statt sie zu heilen.</Text>
         </View>
-        <View style={styles.headerSpacer} />
       </View>
       
       {/* Bubbles Container */}
@@ -153,33 +226,38 @@ const styles = StyleSheet.create({
   header: {
     paddingTop: Platform.OS === 'ios' ? 60 : 40,
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingBottom: 10,
+    flexDirection: 'column',
+    zIndex: 10,
+  },
+  titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    zIndex: 10,
+    marginBottom: 8,
+    minHeight: 40,
   },
   chevronButton: {
-    padding: 8,
-  },
-  headerTitleContainer: {
+    padding: 4,
+    alignSelf: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
+    height: 32,
+    width: 32,
+  },
+  titleContainer: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  headerTitle: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#1A5D5D',
-    textAlign: 'center',
+  titleWrapper: {
     marginBottom: 8,
-    letterSpacing: 0.5,
-  },
-  headerSubtitle: {
-    fontSize: 14,
-    color: Colors.text.secondary,
-    textAlign: 'center',
-    fontWeight: '500',
-    lineHeight: 18,
+    // Nur minimaler Schatten um den Text-Bereich
+    shadowColor: '#1A5D5D',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 4,
   },
   headerSpacer: {
     width: 36,
@@ -187,5 +265,34 @@ const styles = StyleSheet.create({
   bubblesContainer: {
     flex: 1,
     position: 'relative',
+  },
+  subtitleContainer: {
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 34,
+    fontWeight: '700',
+    color: '#1A5D5D',
+    textAlign: 'center',
+    letterSpacing: 1.2,
+    // Eleganter Multi-Layer Schatten-Effekt
+    textShadowColor: 'rgba(26, 93, 93, 0.4)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+    // iOS-spezifische Schatten für Tiefe
+    shadowColor: '#1A5D5D',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 16,
+    elevation: 12,
+    // Subtiler Glanz-Effekt
+    textDecorationColor: 'rgba(26, 93, 93, 0.1)',
+  },
+  headerSubtitle: {
+    fontSize: 14,
+    color: Colors.text.secondary,
+    textAlign: 'center',
+    fontWeight: '500',
+    lineHeight: 18,
   },
 }); 
