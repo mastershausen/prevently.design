@@ -33,7 +33,7 @@ const getBubbleSize = (size: 'large' | 'medium' | 'small') => {
     case 'medium':
       return { width: 110, height: 110 };
     case 'small':
-      return { width: 85, height: 85 };
+      return { width: 100, height: 100 };
   }
 };
 
@@ -81,7 +81,7 @@ const BubbleItem: React.FC<BubbleItemProps> = ({ bubble, onPress }) => {
             <Text style={[
               styles.bubbleTitle, 
               { 
-                fontSize: bubble.size === 'large' ? 16 : bubble.size === 'medium' ? 14 : 12,
+                fontSize: bubble.size === 'large' ? 16 : bubble.size === 'medium' ? 14 : 13,
                 color: bubble.textColor || '#2D3436'
               }
             ]}>
@@ -130,12 +130,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 8,
+    padding: 16,
   },
   bubbleTitle: {
     fontWeight: '600',
     textAlign: 'center',
-    lineHeight: 18,
+    lineHeight: 16,
   },
 });
 
