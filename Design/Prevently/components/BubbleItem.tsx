@@ -105,10 +105,10 @@ const BubbleItem: React.FC<BubbleItemProps> = ({ bubble, onPress }) => {
 const styles = StyleSheet.create({
   bubbleContainer: {
     shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.25,
-    shadowRadius: 24,
-    elevation: 16,
+    shadowOffset: { width: 0, height: 20 },
+    shadowOpacity: 0.35,
+    shadowRadius: 30,
+    elevation: 24,
   },
   glassContainer: {
     borderRadius: 1000,
@@ -116,10 +116,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.4)',
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    shadowColor: 'rgba(0, 0, 0, 0.1)',
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: 'rgba(0, 0, 0, 0.15)',
+    shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 1,
-    shadowRadius: 4,
+    shadowRadius: 12,
   },
   colorGradient: {
     borderRadius: 1000,
