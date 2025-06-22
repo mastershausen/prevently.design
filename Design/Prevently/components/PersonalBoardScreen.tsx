@@ -190,10 +190,10 @@ const styles = StyleSheet.create({
   // Premium Progress Section mit lebendigem Hintergrund
   progressSection: {
     alignItems: 'center',
-    paddingVertical: 40,
+    paddingVertical: 50,
     paddingTop: 40,
     paddingHorizontal: 20,
-    paddingBottom: 50, // Mehr Platz unten für besseren Übergang
+    paddingBottom: 60,
     // Lebendiger Gradient-Hintergrund
     backgroundColor: '#F8FAFF',
     position: 'relative',
@@ -239,9 +239,9 @@ const styles = StyleSheet.create({
     zIndex: 5,
   },
   progressCircleOuter: {
-    width: 170,
-    height: 170,
-    borderRadius: 85,
+    width: 200,
+    height: 200,
+    borderRadius: 100,
     padding: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
@@ -254,15 +254,15 @@ const styles = StyleSheet.create({
   },
   progressGradient: {
     flex: 1,
-    borderRadius: 92,
+    borderRadius: 106,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
   },
   progressInner: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 140,
+    height: 140,
+    borderRadius: 70,
     backgroundColor: Colors.white,
     justifyContent: 'center',
     alignItems: 'center',
@@ -279,10 +279,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   progressNumber: {
-    fontSize: 46,
+    fontSize: 54,
     fontWeight: '900',
     color: Colors.text.dark,
-    lineHeight: 52,
+    lineHeight: 60,
     textShadowColor: 'rgba(0, 0, 0, 0.1)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
@@ -421,7 +421,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     marginTop: -40, // Stärker negativ um progressSection zu überdecken
-    paddingTop: 24, // Reduziert von 32
+    paddingTop: 24,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.1,
@@ -430,13 +430,13 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     paddingHorizontal: 20,
-    marginBottom: 12, // Reduziert von 16
+    marginBottom: 12,
   },
   sectionTitle: {
     fontSize: 22,
     fontWeight: '900',
     color: Colors.text.dark,
-    marginBottom: 4, // Reduziert von 6
+    marginBottom: 4,
     letterSpacing: 0.5,
   },
   sectionSubtitle: {
@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
   },
   categoriesContainer: {
     paddingLeft: 20,
-    paddingBottom: 20, // Weniger Platz unter den Tiles
+    paddingBottom: 20, // Wieder hinzugefügt
   },
   categoriesScroll: {
     paddingRight: 20,
