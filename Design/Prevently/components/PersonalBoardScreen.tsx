@@ -13,16 +13,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Sidebar from './Sidebar';
 import { IconSymbol } from './ui/IconSymbol';
 import Colors from '../constants/Colors';
-
-interface CategoryData {
-  id: number;
-  title: string;
-  color: string;
-  textColor: string;
-  activeBigWins: number;
-  totalBigWins: number;
-  isActive: boolean;
-}
+import Tile, { CategoryData } from './Tile';
+import MotivationCard from './MotivationCard';
 
 // Beispiel-Daten für aktive Kategorien
 const activeCategoriesData: CategoryData[] = [
@@ -55,76 +47,50 @@ const activeCategoriesData: CategoryData[] = [
   },
 ];
 
-// Radial Progress Circle Component
-const RadialProgress: React.FC<{ progress: number }> = ({ progress }) => {
+// Premium Radial Progress Circle Component
+const PremiumRadialProgress: React.FC<{ progress: number }> = ({ progress }) => {
   return (
-    <View style={styles.progressContainer}>
-      <View style={styles.progressCircle}>
-        <LinearGradient
-          colors={[
-            progress < 30 ? '#FF6B6B' : progress < 70 ? '#FFA726' : '#4CAF50',
-            progress < 30 ? '#FF8E8E' : progress < 70 ? '#FFB74D' : '#66BB6A'
-          ]}
-          style={styles.progressGradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
-          <View style={styles.progressInner}>
-            <Text style={styles.progressText}>{progress}%</Text>
-            <Text style={styles.progressLabel}>Prävention</Text>
-          </View>
-        </LinearGradient>
+    <View style={styles.progressSection}>
+      {/* Prevently Branding */}
+      <View style={styles.brandingContainer}>
+        <Text style={styles.brandName}>Prevently</Text>
+        <Text style={styles.brandTagline}>Krankheiten vermeiden, statt sie zu heilen</Text>
+      </View>
+
+      {/* Score Introduction */}
+      <Text style={styles.scoreIntroduction}>Dein Präventionsscore zeigt dir, wie gut du dich um deine Gesundheit kümmerst</Text>
+
+      {/* Enhanced Progress Circle */}
+      <View style={styles.progressContainer}>
+        <View style={styles.progressCircleOuter}>
+          <LinearGradient
+            colors={[
+              progress < 30 ? '#FF6B6B' : progress < 70 ? '#FFA726' : '#4CAF50',
+              progress < 30 ? '#FF8E8E' : progress < 70 ? '#FFB74D' : '#66BB6A',
+              progress < 30 ? '#FFAAAA' : progress < 70 ? '#FFC374' : '#81C784'
+            ]}
+            style={styles.progressGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          >
+            <View style={styles.progressInner}>
+              <Text style={styles.progressNumber}>{progress}</Text>
+              <Text style={styles.progressPercent}>%</Text>
+              <Text style={styles.progressLabel}>Prävention</Text>
+            </View>
+          </LinearGradient>
+        </View>
+        
+        {/* Progress Ring Animation Placeholder */}
+        <View style={styles.progressRing} />
+      </View>
+
+      {/* Achievement Text */}
+      <View style={styles.achievementContainer}>
+        <Text style={styles.achievementText}>🎉 Ausgezeichnet!</Text>
+        <Text style={styles.lastImprovement}>Zuletzt verbessert: +5 Punkte am 15.12.2024</Text>
       </View>
     </View>
-  );
-};
-
-// Category Card Component
-const CategoryCard: React.FC<{ category: CategoryData; onPress: (category: CategoryData) => void }> = ({ 
-  category, 
-  onPress 
-}) => {
-  const progressPercentage = (category.activeBigWins / category.totalBigWins) * 100;
-
-  return (
-    <TouchableOpacity 
-      style={styles.categoryCard}
-      onPress={() => onPress(category)}
-      activeOpacity={0.8}
-    >
-      <LinearGradient
-        colors={[
-          `${category.color}F0`,
-          `${category.color}E0`,
-          `${category.color}D0`
-        ]}
-        style={styles.categoryGradient}
-      >
-        <View style={styles.categoryContent}>
-          <Text style={[styles.categoryTitle, { color: category.textColor }]}>
-            {category.title}
-          </Text>
-          
-          <View style={styles.progressInfo}>
-            <Text style={[styles.progressStats, { color: category.textColor }]}>
-              {category.activeBigWins}/{category.totalBigWins} Big Wins aktiv
-            </Text>
-            
-            <View style={styles.miniProgressBar}>
-              <View 
-                style={[
-                  styles.miniProgressFill, 
-                  { 
-                    width: `${progressPercentage}%`,
-                    backgroundColor: category.textColor 
-                  }
-                ]} 
-              />
-            </View>
-          </View>
-        </View>
-      </LinearGradient>
-    </TouchableOpacity>
   );
 };
 
@@ -133,7 +99,6 @@ export default function PersonalBoardScreen() {
   
   // Beispiel Präventionsscore - später aus State/Context
   const preventionScore = 72;
-  const lastImprovement = "+5 Punkte am 15.12.2024";
 
   const handleCategoryPress = (category: CategoryData) => {
     console.log(`Category pressed: ${category.title}`);
@@ -152,30 +117,21 @@ export default function PersonalBoardScreen() {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
       
-      {/* Header mit Sidebar Button */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={openSidebar} style={styles.menuButton}>
-          <IconSymbol name="line.3.horizontal" size={24} color={Colors.text.dark} />
-        </TouchableOpacity>
-        
-        <Text style={styles.screenTitle}>Personal Board</Text>
-        
-        <View style={styles.headerSpacer} />
-      </View>
+      {/* Floating Sidebar Button */}
+      <TouchableOpacity onPress={openSidebar} style={styles.floatingMenuButton}>
+        <IconSymbol name="line.3.horizontal" size={24} color={Colors.text.dark} />
+      </TouchableOpacity>
 
       <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        {/* Präventionsscore Section */}
-        <View style={styles.scoreSection}>
-          <RadialProgress progress={preventionScore} />
-          <Text style={styles.lastImprovement}>{lastImprovement}</Text>
-        </View>
+        {/* Premium Präventionsscore Section */}
+        <PremiumRadialProgress progress={preventionScore} />
 
         {/* Aktive Kategorien Section */}
         <View style={styles.categoriesSection}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Deine aktiven Bereiche</Text>
             <Text style={styles.sectionSubtitle}>
-              {activeCategoriesData.length} von 13 Kategorien aktiv
+              {activeCategoriesData.length} von 13 Kategorien aktiviert • Du bist auf einem super Weg! 💪
             </Text>
           </View>
 
@@ -186,7 +142,7 @@ export default function PersonalBoardScreen() {
             style={styles.categoriesContainer}
           >
             {activeCategoriesData.map((category) => (
-              <CategoryCard
+              <Tile
                 key={category.id}
                 category={category}
                 onPress={handleCategoryPress}
@@ -201,20 +157,14 @@ export default function PersonalBoardScreen() {
             >
               <View style={styles.addCategoryContent}>
                 <IconSymbol name="plus.circle" size={32} color={Colors.primary} />
-                <Text style={styles.addCategoryText}>Kategorie hinzufügen</Text>
+                <Text style={styles.addCategoryText}>Weitere Kategorie aktivieren</Text>
               </View>
             </TouchableOpacity>
           </ScrollView>
         </View>
 
-        {/* Motivational Section */}
-        <View style={styles.motivationSection}>
-          <Text style={styles.motivationTitle}>🎯 Dein Präventions-Fortschritt</Text>
-          <Text style={styles.motivationText}>
-            Großartig! Du hast bereits {activeCategoriesData.length} Gesundheitsbereiche aktiviert. 
-            Jede kleine Verbesserung bringt dich näher zu einem gesünderen Leben.
-          </Text>
-        </View>
+        {/* Motivation Card */}
+        <MotivationCard activeCategoriesCount={activeCategoriesData.length} />
       </ScrollView>
 
       {/* Sidebar */}
@@ -228,77 +178,134 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
-  },
-  menuButton: {
-    padding: 8,
-    borderRadius: 12,
-    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-  },
-  screenTitle: {
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.text.dark,
-  },
-  headerSpacer: {
-    width: 40,
+  floatingMenuButton: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+    zIndex: 100,
+    padding: 12,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
   },
   scrollContainer: {
     flex: 1,
   },
   
-  // Präventionsscore Styles
-  scoreSection: {
+  // Premium Progress Section
+  progressSection: {
     alignItems: 'center',
-    paddingVertical: 30,
+    paddingVertical: 60,
+    paddingTop: 80,
     paddingHorizontal: 20,
+    backgroundColor: 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)',
+  },
+  brandingContainer: {
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  brandName: {
+    fontSize: 32,
+    fontWeight: '900',
+    color: Colors.primary,
+    letterSpacing: 1,
+    marginBottom: 4,
+  },
+  brandTagline: {
+    fontSize: 14,
+    color: Colors.text.secondary,
+    fontWeight: '500',
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
+  scoreIntroduction: {
+    fontSize: 16,
+    color: Colors.text.secondary,
+    textAlign: 'center',
+    marginBottom: 32,
+    lineHeight: 22,
+    maxWidth: 280,
+    fontWeight: '500',
   },
   progressContainer: {
-    marginBottom: 12,
+    position: 'relative',
+    marginBottom: 24,
   },
-  progressCircle: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    padding: 8,
+  progressCircleOuter: {
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    padding: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.15,
+    shadowRadius: 24,
+    elevation: 12,
   },
   progressGradient: {
     flex: 1,
-    borderRadius: 66,
+    borderRadius: 84,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
   },
   progressInner: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 130,
+    height: 130,
+    borderRadius: 65,
     backgroundColor: Colors.white,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowRadius: 12,
+    elevation: 8,
   },
-  progressText: {
-    fontSize: 24,
-    fontWeight: '700',
+  progressNumber: {
+    fontSize: 36,
+    fontWeight: '800',
     color: Colors.text.dark,
+    lineHeight: 40,
+  },
+  progressPercent: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: Colors.text.secondary,
+    position: 'absolute',
+    top: 35,
+    right: 25,
   },
   progressLabel: {
-    fontSize: 12,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '600',
     color: Colors.text.secondary,
-    marginTop: 2,
+    marginTop: -4,
+    letterSpacing: 0.5,
+  },
+  progressRing: {
+    position: 'absolute',
+    top: -6,
+    left: -6,
+    width: 192,
+    height: 192,
+    borderRadius: 96,
+    borderWidth: 2,
+    borderColor: 'rgba(76, 175, 80, 0.2)',
+    borderStyle: 'dashed',
+  },
+  achievementContainer: {
+    alignItems: 'center',
+  },
+  achievementText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: Colors.text.dark,
+    marginBottom: 8,
   },
   lastImprovement: {
     fontSize: 14,
@@ -310,21 +317,24 @@ const styles = StyleSheet.create({
   // Kategorien Section
   categoriesSection: {
     paddingBottom: 20,
+    backgroundColor: Colors.white,
   },
   sectionHeader: {
     paddingHorizontal: 20,
-    marginBottom: 16,
+    marginBottom: 20,
+    marginTop: 8,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: 22,
+    fontWeight: '800',
     color: Colors.text.dark,
-    marginBottom: 4,
+    marginBottom: 6,
   },
   sectionSubtitle: {
-    fontSize: 14,
+    fontSize: 15,
     color: Colors.text.secondary,
     fontWeight: '500',
+    lineHeight: 20,
   },
   categoriesContainer: {
     paddingLeft: 20,
@@ -333,55 +343,9 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
 
-  // Category Card Styles
-  categoryCard: {
-    width: 200,
-    height: 120,
-    marginRight: 16,
-    borderRadius: 16,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 6,
-  },
-  categoryGradient: {
-    flex: 1,
-    padding: 16,
-    justifyContent: 'space-between',
-  },
-  categoryContent: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  categoryTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 20,
-  },
-  progressInfo: {
-    marginTop: 8,
-  },
-  progressStats: {
-    fontSize: 12,
-    fontWeight: '500',
-    marginBottom: 6,
-  },
-  miniProgressBar: {
-    height: 3,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    borderRadius: 2,
-    overflow: 'hidden',
-  },
-  miniProgressFill: {
-    height: '100%',
-    borderRadius: 2,
-  },
-
   // Add Category Card
   addCategoryCard: {
-    width: 160,
+    width: 180,
     height: 120,
     borderRadius: 16,
     borderWidth: 2,
@@ -400,27 +364,6 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     marginTop: 8,
     textAlign: 'center',
-  },
-
-  // Motivation Section
-  motivationSection: {
-    marginHorizontal: 20,
-    marginVertical: 20,
-    padding: 20,
-    backgroundColor: 'rgba(76, 175, 80, 0.08)',
-    borderRadius: 16,
-    borderLeftWidth: 4,
-    borderLeftColor: '#4CAF50',
-  },
-  motivationTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text.dark,
-    marginBottom: 8,
-  },
-  motivationText: {
-    fontSize: 14,
-    color: Colors.text.secondary,
-    lineHeight: 20,
+    lineHeight: 18,
   },
 }); 
