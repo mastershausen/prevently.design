@@ -231,12 +231,10 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   expandButton: {
-    position: 'absolute',
-    right: 0,
-    top: 8,
     padding: 8,
-    borderRadius: 0,
+    borderRadius: 8,
     backgroundColor: 'transparent',
+    alignSelf: 'flex-start',
   },
 
   // Carousel View
