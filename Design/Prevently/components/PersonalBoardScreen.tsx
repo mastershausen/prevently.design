@@ -27,8 +27,8 @@ const PremiumRadialProgress: React.FC<{ progress: number }> = ({ progress }) => 
       </View>
 
       {/* Motivierender Call-to-Action statt langweiliger Erklärung */}
-      <Text style={styles.motivationalText} numberOfLines={1} adjustsFontSizeToFit={true}>
-        🚀 Du rockst deine Gesundheit!
+      <Text style={styles.motivationalText}>
+        🚀 Du rockst deine Gesundheit! Dein Präventionsscore beträgt
       </Text>
 
       {/* Enhanced Progress Circle */}
@@ -103,7 +103,7 @@ const PersonalBoardScreen: React.FC = () => {
         <IconSymbol name="line.3.horizontal" size={24} color={Colors.text.dark} />
       </TouchableOpacity>
 
-      <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+      <View style={styles.mainContent}>
         {/* Premium Präventionsscore Section */}
         <PremiumRadialProgress progress={preventionScore} />
 
@@ -116,48 +116,47 @@ const PersonalBoardScreen: React.FC = () => {
             </Text>
           </View>
 
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoriesScroll}>
-            <Tile
-              id="nutrition"
-              title="Ernährung & Stoffwechsel"
-              icon="🥗"
-              progress={85}
-              description="Ausgewogene Ernährung"
-              color="#4CAF50"
-              onPress={() => console.log('Ernährung pressed')}
-            />
-            <Tile
-              id="fitness"
-              title="Bewegung & Fitness"
-              icon="🏃‍♂️"
-              progress={72}
-              description="Regelmäßige Aktivität"
-              color="#2196F3"
-              onPress={() => console.log('Fitness pressed')}
-            />
-            <Tile
-              id="sleep"
-              title="Schlaf & Erholung"
-              icon="😴"
-              progress={68}
-              description="Erholsamer Schlaf"
-              color="#FF9800"
-              onPress={() => console.log('Schlaf pressed')}
-            />
-            
-            {/* Add Category Card */}
-            <Pressable style={styles.addCategoryCard} onPress={handleAddCategory}>
-              <View style={styles.addCategoryContent}>
-                <Text style={{ fontSize: 32, color: Colors.primary }}>➕</Text>
-                <Text style={styles.addCategoryText}>Weitere{'\n'}Kategorie{'\n'}hinzufügen</Text>
-              </View>
-            </Pressable>
-          </ScrollView>
+          <View style={styles.categoriesContainer}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoriesScroll}>
+              <Tile
+                id="nutrition"
+                title="Ernährung & Stoffwechsel"
+                icon="🥗"
+                progress={85}
+                description="Ausgewogene Ernährung"
+                color="#4CAF50"
+                onPress={() => console.log('Ernährung pressed')}
+              />
+              <Tile
+                id="fitness"
+                title="Bewegung & Fitness"
+                icon="🏃‍♂️"
+                progress={72}
+                description="Regelmäßige Aktivität"
+                color="#2196F3"
+                onPress={() => console.log('Fitness pressed')}
+              />
+              <Tile
+                id="sleep"
+                title="Schlaf & Erholung"
+                icon="😴"
+                progress={68}
+                description="Erholsamer Schlaf"
+                color="#FF9800"
+                onPress={() => console.log('Schlaf pressed')}
+              />
+              
+              {/* Add Category Card */}
+              <Pressable style={styles.addCategoryCard} onPress={handleAddCategory}>
+                <View style={styles.addCategoryContent}>
+                  <Text style={{ fontSize: 32, color: Colors.primary }}>➕</Text>
+                  <Text style={styles.addCategoryText}>Weitere{'\n'}Kategorie{'\n'}hinzufügen</Text>
+                </View>
+              </Pressable>
+            </ScrollView>
+          </View>
         </View>
-
-        {/* Motivation Card */}
-        <MotivationCard activeCategoriesCount={activeCategoriesCount} />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -183,15 +182,15 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 8,
   },
-  scrollContainer: {
+  mainContent: {
     flex: 1,
   },
   
   // Premium Progress Section mit lebendigem Hintergrund
   progressSection: {
     alignItems: 'center',
-    paddingVertical: 60,
-    paddingTop: 80,
+    paddingVertical: 40,
+    paddingTop: 40,
     paddingHorizontal: 20,
     // Lebendiger Gradient-Hintergrund
     backgroundColor: '#F8FAFF',
@@ -200,11 +199,11 @@ const styles = StyleSheet.create({
   },
   brandingContainer: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 16,
     zIndex: 10,
   },
   brandName: {
-    fontSize: 34,
+    fontSize: 30,
     fontWeight: '900',
     color: Colors.primary,
     letterSpacing: 1.5,
@@ -214,7 +213,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 4,
   },
   brandTagline: {
-    fontSize: 15,
+    fontSize: 14,
     color: Colors.text.secondary,
     fontWeight: '600',
     textAlign: 'center',
@@ -222,30 +221,30 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   motivationalText: {
-    fontSize: 18,
+    fontSize: 16,
     color: Colors.primary,
     textAlign: 'center',
-    marginBottom: 32,
-    lineHeight: 24,
+    marginBottom: 24,
+    lineHeight: 22,
     maxWidth: 320,
     fontWeight: '700',
     letterSpacing: 0.5,
   },
   progressContainer: {
     position: 'relative',
-    marginBottom: 28,
+    marginBottom: 20,
     zIndex: 5,
   },
   progressCircleOuter: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    padding: 15,
+    width: 170,
+    height: 170,
+    borderRadius: 85,
+    padding: 12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 12 },
+    shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.25,
-    shadowRadius: 32,
-    elevation: 16,
+    shadowRadius: 24,
+    elevation: 12,
     // Zusätzlicher Glow-Effekt
     borderWidth: 2,
     borderColor: 'rgba(255, 255, 255, 0.5)',
@@ -258,17 +257,17 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   progressInner: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     backgroundColor: Colors.white,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
-    shadowRadius: 16,
-    elevation: 12,
+    shadowRadius: 12,
+    elevation: 8,
     position: 'relative',
   },
   scoreContainer: {
@@ -277,10 +276,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   progressNumber: {
-    fontSize: 54,
+    fontSize: 46,
     fontWeight: '900',
     color: Colors.text.dark,
-    lineHeight: 60,
+    lineHeight: 52,
     textShadowColor: 'rgba(0, 0, 0, 0.1)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
@@ -416,8 +415,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    marginTop: -24,
-    paddingTop: 32,
+    marginTop: -16,
+    paddingTop: 24,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.1,
@@ -426,33 +425,34 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     paddingHorizontal: 20,
-    marginBottom: 24,
+    marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '900',
     color: Colors.text.dark,
-    marginBottom: 8,
+    marginBottom: 6,
     letterSpacing: 0.5,
   },
   sectionSubtitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: Colors.text.secondary,
     fontWeight: '600',
-    lineHeight: 22,
+    lineHeight: 20,
   },
   categoriesContainer: {
     paddingLeft: 20,
   },
   categoriesScroll: {
     paddingRight: 20,
+    backgroundColor: 'transparent', // Kein grauer Hintergrund zwischen Tiles
   },
 
   // Verbesserte Add Category Card
   addCategoryCard: {
     width: 180,
-    height: 120,
-    borderRadius: 20,
+    height: 140,
+    borderRadius: 24,
     borderWidth: 2,
     borderColor: Colors.primary,
     borderStyle: 'dashed',

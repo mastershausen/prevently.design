@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     padding: 16,
     position: 'relative',
     overflow: 'hidden',
-    justifyContent: 'space-between', // Bessere Verteilung der Elemente
   },
   
   // Schwebende Hintergrund-Elemente
@@ -124,11 +123,16 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
 
+  // Header - Position: oben (0-52px)
   header: {
+    position: 'absolute',
+    top: 16,
+    left: 16,
+    right: 16,
+    height: 44,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 8,
     zIndex: 10,
   },
   iconContainer: {
@@ -166,34 +170,42 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
 
+  // Content - Position: Mitte (60-100px)
   content: {
-    flex: 1,
-    justifyContent: 'center',
+    position: 'absolute',
+    top: 68,
+    left: 16,
+    right: 16,
+    height: 50,
     zIndex: 5,
-    marginBottom: 8,
   },
   title: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '800',
     color: Colors.white,
     marginBottom: 4,
-    lineHeight: 20,
+    lineHeight: 18,
     letterSpacing: 0.3,
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
   description: {
-    fontSize: 12,
+    fontSize: 11,
     color: 'rgba(255, 255, 255, 0.9)',
     fontWeight: '600',
-    lineHeight: 16,
+    lineHeight: 14,
     letterSpacing: 0.2,
   },
 
+  // Progress Bar - Position: ganz unten (124-130px)
   progressContainer: {
+    position: 'absolute',
+    bottom: 10,
+    left: 16,
+    right: 16,
+    height: 6,
     zIndex: 3,
-    marginTop: 'auto', // Schiebt die Progress Bar nach unten
   },
   progressTrack: {
     height: 6,
