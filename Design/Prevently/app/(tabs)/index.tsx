@@ -1,6 +1,6 @@
 import React from 'react';
-import BubbleScreen from '../../components/BubbleScreen';
+import PersonalBoardScreen from '../../components/PersonalBoardScreen';
 
 export default function HomeScreen() {
-  return <BubbleScreen />;
+  return <PersonalBoardScreen />;
 }
