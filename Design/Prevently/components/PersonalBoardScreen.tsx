@@ -17,6 +17,7 @@ import Tile from './Tile';
 import MotivationCard from './MotivationCard';
 import Sidebar from './Sidebar';
 import BigWinsScreen from './BigWinsScreen';
+import CategorySelectionModal from './CategorySelectionModal';
 
 // Premium Radial Progress Circle Component
 const PremiumRadialProgress: React.FC<{ progress: number }> = ({ progress }) => {
@@ -85,6 +86,8 @@ const PremiumRadialProgress: React.FC<{ progress: number }> = ({ progress }) => 
 const PersonalBoardScreen: React.FC = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [bigWinsVisible, setBigWinsVisible] = useState(false);
+  const [categoryModalVisible, setCategoryModalVisible] = useState(false);
+  const [activeCategories, setActiveCategories] = useState(['nutrition', 'fitness', 'sleep']);
   const [selectedCategory, setSelectedCategory] = useState<{
     id: string;
     title: string;
@@ -93,7 +96,7 @@ const PersonalBoardScreen: React.FC = () => {
     progress: number;
   } | null>(null);
   const preventionScore = 72;
-  const activeCategoriesCount = 3; // Anzahl der aktiven Kategorien
+  const activeCategoriesCount = activeCategories.length; // Dynamisch basierend auf State
 
   // Handlers
   const handleMenuPress = () => {
@@ -105,7 +108,17 @@ const PersonalBoardScreen: React.FC = () => {
   };
 
   const handleAddCategory = () => {
-    console.log('Add category pressed');
+    setCategoryModalVisible(true);
+  };
+
+  const handleCloseCategoryModal = () => {
+    setCategoryModalVisible(false);
+  };
+
+  const handleSelectCategory = (category: { id: string; title: string; icon: string; color: string; description: string; isActive: boolean }) => {
+    // Kategorie zu aktiven Kategorien hinzufügen
+    setActiveCategories(prev => [...prev, category.id]);
+    console.log(`Kategorie hinzugefügt: ${category.title}`);
   };
 
   const handleMenuItemPress = (item: string) => {
@@ -231,6 +244,14 @@ const PersonalBoardScreen: React.FC = () => {
           </View>
         </View>
       </View>
+
+      {/* Category Selection Modal */}
+      <CategorySelectionModal
+        visible={categoryModalVisible}
+        onClose={handleCloseCategoryModal}
+        onSelectCategory={handleSelectCategory}
+        activeCategories={activeCategories}
+      />
     </SafeAreaView>
   );
 };
