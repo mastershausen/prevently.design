@@ -176,7 +176,7 @@ const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
             {/* Subtitle */}
             <View style={styles.subtitleContainer}>
               <Text style={styles.subtitle}>
-                Wähle einen neuen Gesundheitsbereich aus, den du aktivieren möchtest
+                Wähle einen neuen Präventionsbereich aus, den du aktivieren möchtest
               </Text>
             </View>
 
@@ -214,7 +214,7 @@ const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
             {/* Footer Info */}
             <View style={styles.footerInfo}>
               <Text style={styles.footerText}>
-                💡 Du kannst jederzeit weitere Bereiche hinzufügen oder entfernen
+                💡 Insgesamt gibt es 13 Präventionsbereiche - aktiviere die für dich wichtigsten
               </Text>
             </View>
           </SafeAreaView>
