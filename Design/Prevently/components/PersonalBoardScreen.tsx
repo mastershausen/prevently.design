@@ -16,6 +16,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import Tile from './Tile';
 import MotivationCard from './MotivationCard';
 import Sidebar from './Sidebar';
+import BigWinsScreen from './BigWinsScreen';
 
 // Premium Radial Progress Circle Component
 const PremiumRadialProgress: React.FC<{ progress: number }> = ({ progress }) => {
@@ -83,6 +84,14 @@ const PremiumRadialProgress: React.FC<{ progress: number }> = ({ progress }) => 
 
 const PersonalBoardScreen: React.FC = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [bigWinsVisible, setBigWinsVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<{
+    id: string;
+    title: string;
+    icon: string;
+    color: string;
+    progress: number;
+  } | null>(null);
   const preventionScore = 72;
   const activeCategoriesCount = 3; // Anzahl der aktiven Kategorien
 
@@ -103,6 +112,36 @@ const PersonalBoardScreen: React.FC = () => {
     console.log(`${item} pressed`);
     setSidebarVisible(false);
   };
+
+  const handleTilePress = (categoryData: {
+    id: string;
+    title: string;
+    icon: string;
+    color: string;
+    progress: number;
+  }) => {
+    setSelectedCategory(categoryData);
+    setBigWinsVisible(true);
+  };
+
+  const handleCloseBigWins = () => {
+    setBigWinsVisible(false);
+    setSelectedCategory(null);
+  };
+
+  // BigWinsScreen anzeigen wenn sichtbar
+  if (bigWinsVisible && selectedCategory) {
+    return (
+      <BigWinsScreen
+        categoryId={selectedCategory.id}
+        categoryTitle={selectedCategory.title}
+        categoryIcon={selectedCategory.icon}
+        categoryColor={selectedCategory.color}
+        progress={selectedCategory.progress}
+        onBack={handleCloseBigWins}
+      />
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -142,7 +181,13 @@ const PersonalBoardScreen: React.FC = () => {
                 progress={85}
                 description="Ausgewogene Ernährung"
                 color="#4CAF50"
-                onPress={() => console.log('Ernährung pressed')}
+                onPress={() => handleTilePress({
+                  id: "nutrition",
+                  title: "Ernährung & Stoffwechsel",
+                  icon: "🥗",
+                  color: "#4CAF50",
+                  progress: 85
+                })}
               />
               <Tile
                 id="fitness"
@@ -151,7 +196,13 @@ const PersonalBoardScreen: React.FC = () => {
                 progress={72}
                 description="Regelmäßige Aktivität"
                 color="#2196F3"
-                onPress={() => console.log('Fitness pressed')}
+                onPress={() => handleTilePress({
+                  id: "fitness",
+                  title: "Bewegung & Fitness",
+                  icon: "🏃‍♂️",
+                  color: "#2196F3",
+                  progress: 72
+                })}
               />
               <Tile
                 id="sleep"
@@ -160,7 +211,13 @@ const PersonalBoardScreen: React.FC = () => {
                 progress={68}
                 description="Erholsamer Schlaf"
                 color="#FF9800"
-                onPress={() => console.log('Schlaf pressed')}
+                onPress={() => handleTilePress({
+                  id: "sleep",
+                  title: "Schlaf & Erholung",
+                  icon: "😴",
+                  color: "#FF9800",
+                  progress: 68
+                })}
               />
               
               {/* Add Category Card */}
