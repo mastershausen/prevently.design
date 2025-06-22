@@ -6,19 +6,16 @@ import {
   StatusBar,
   TouchableOpacity,
   Dimensions,
-  ScrollView,
   SafeAreaView,
-  Pressable
+  ScrollView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '@/constants/Colors';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import Tile from './Tile';
-import MotivationCard from './MotivationCard';
 import Sidebar from './Sidebar';
 import BigWinsScreen from './BigWinsScreen';
 import CategorySelectionModal from './CategorySelectionModal';
-import CategoryGridModal from './CategoryGridModal';
+import ExpandableBottomSheet from './ExpandableBottomSheet';
 
 // Premium Radial Progress Circle Component
 const PremiumRadialProgress: React.FC<{ progress: number }> = ({ progress }) => {
@@ -88,7 +85,6 @@ const PersonalBoardScreen: React.FC = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [bigWinsVisible, setBigWinsVisible] = useState(false);
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
-  const [categoryGridVisible, setCategoryGridVisible] = useState(false);
   const [activeCategories, setActiveCategories] = useState(['nutrition', 'fitness', 'sleep']);
   const [selectedCategory, setSelectedCategory] = useState<{
     id: string;
@@ -121,31 +117,6 @@ const PersonalBoardScreen: React.FC = () => {
     // Kategorie zu aktiven Kategorien hinzufügen
     setActiveCategories(prev => [...prev, category.id]);
     console.log(`Kategorie hinzugefügt: ${category.title}`);
-  };
-
-  const handleOpenGrid = () => {
-    setCategoryGridVisible(true);
-  };
-
-  const handleCloseGrid = () => {
-    setCategoryGridVisible(false);
-  };
-
-  const handleGridCategoryPress = (category: { id: string; title: string; icon: string; color: string; progress: number; description: string }) => {
-    setCategoryGridVisible(false);
-    setSelectedCategory({
-      id: category.id,
-      title: category.title,
-      icon: category.icon,
-      color: category.color,
-      progress: category.progress
-    });
-    setBigWinsVisible(true);
-  };
-
-  const handleGridAddCategory = () => {
-    setCategoryGridVisible(false);
-    setCategoryModalVisible(true);
   };
 
   const handleMenuItemPress = (item: string) => {
@@ -184,142 +155,76 @@ const PersonalBoardScreen: React.FC = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" />
-      
-      {/* Floating Sidebar Button */}
-      <TouchableOpacity onPress={handleMenuPress} style={styles.floatingMenuButton}>
-        <IconSymbol name="line.3.horizontal" size={24} color={Colors.text.dark} />
-      </TouchableOpacity>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
+        
+        {/* Floating Sidebar Button */}
+        <TouchableOpacity onPress={handleMenuPress} style={styles.floatingMenuButton}>
+          <IconSymbol name="line.3.horizontal" size={24} color={Colors.text.dark} />
+        </TouchableOpacity>
 
-      {/* Sidebar */}
-      <Sidebar
-        visible={sidebarVisible}
-        onClose={handleCloseSidebar}
-        onMenuItemPress={handleMenuItemPress}
-      />
+        {/* Sidebar */}
+        <Sidebar
+          visible={sidebarVisible}
+          onClose={handleCloseSidebar}
+          onMenuItemPress={handleMenuItemPress}
+        />
 
-      <View style={styles.mainContent}>
-        {/* Premium Präventionsscore Section */}
-        <PremiumRadialProgress progress={preventionScore} />
+        {/* Main Content Area */}
+        <ScrollView 
+          style={styles.mainScrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Premium Präventionsscore Section */}
+          <PremiumRadialProgress progress={preventionScore} />
+          
+          {/* Spacer für Bottom Sheet */}
+          <View style={styles.bottomSpacer} />
+        </ScrollView>
 
-        {/* Aktive Kategorien Section */}
-        <View style={styles.categoriesSection}>
-          <View style={styles.sectionHeader}>
-            <View style={styles.sectionHeaderContent}>
-              <View>
-                <Text style={styles.sectionTitle}>Deine aktiven Bereiche</Text>
-                <Text style={styles.sectionSubtitle}>
-                  {activeCategoriesCount} von 13 Kategorien aktiviert • Du bist auf einem super Weg! 💪
-                </Text>
-              </View>
-              <TouchableOpacity onPress={handleOpenGrid} style={styles.gridButton}>
-                <IconSymbol name="grid" size={20} color={Colors.primary} />
-              </TouchableOpacity>
-            </View>
-          </View>
+        {/* Expandable Bottom Sheet für Kategorien */}
+        <ExpandableBottomSheet
+          categories={[
+            {
+              id: "nutrition",
+              title: "Ernährung & Stoffwechsel",
+              icon: "🥗",
+              color: "#4CAF50",
+              progress: 85,
+              description: "Ausgewogene Ernährung"
+            },
+            {
+              id: "fitness",
+              title: "Bewegung & Fitness",
+              icon: "🏃‍♂️",
+              color: "#2196F3",
+              progress: 72,
+              description: "Regelmäßige Aktivität"
+            },
+            {
+              id: "sleep",
+              title: "Schlaf & Erholung",
+              icon: "😴",
+              color: "#FF9800",
+              progress: 68,
+              description: "Erholsamer Schlaf"
+            }
+          ]}
+          activeCategoriesCount={activeCategoriesCount}
+          onCategoryPress={handleTilePress}
+          onAddCategory={handleAddCategory}
+        />
 
-          <View style={styles.categoriesContainer}>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoriesScroll}>
-              <Tile
-                id="nutrition"
-                title="Ernährung & Stoffwechsel"
-                icon="🥗"
-                progress={85}
-                description="Ausgewogene Ernährung"
-                color="#4CAF50"
-                onPress={() => handleTilePress({
-                  id: "nutrition",
-                  title: "Ernährung & Stoffwechsel",
-                  icon: "🥗",
-                  color: "#4CAF50",
-                  progress: 85
-                })}
-              />
-              <Tile
-                id="fitness"
-                title="Bewegung & Fitness"
-                icon="🏃‍♂️"
-                progress={72}
-                description="Regelmäßige Aktivität"
-                color="#2196F3"
-                onPress={() => handleTilePress({
-                  id: "fitness",
-                  title: "Bewegung & Fitness",
-                  icon: "🏃‍♂️",
-                  color: "#2196F3",
-                  progress: 72
-                })}
-              />
-              <Tile
-                id="sleep"
-                title="Schlaf & Erholung"
-                icon="😴"
-                progress={68}
-                description="Erholsamer Schlaf"
-                color="#FF9800"
-                onPress={() => handleTilePress({
-                  id: "sleep",
-                  title: "Schlaf & Erholung",
-                  icon: "😴",
-                  color: "#FF9800",
-                  progress: 68
-                })}
-              />
-              
-              {/* Add Category Card */}
-              <Pressable style={styles.addCategoryCard} onPress={handleAddCategory}>
-                <View style={styles.addCategoryContent}>
-                  <Text style={{ fontSize: 32, color: Colors.primary }}>➕</Text>
-                  <Text style={styles.addCategoryText}>Weitere{'\n'}Kategorie{'\n'}hinzufügen</Text>
-                </View>
-              </Pressable>
-            </ScrollView>
-          </View>
-        </View>
+        {/* Category Selection Modal */}
+        <CategorySelectionModal
+          visible={categoryModalVisible}
+          onClose={handleCloseCategoryModal}
+          onSelectCategory={handleSelectCategory}
+          activeCategories={activeCategories}
+        />
       </View>
-
-      {/* Category Selection Modal */}
-      <CategorySelectionModal
-        visible={categoryModalVisible}
-        onClose={handleCloseCategoryModal}
-        onSelectCategory={handleSelectCategory}
-        activeCategories={activeCategories}
-      />
-
-      {/* Category Grid Modal */}
-      <CategoryGridModal
-        visible={categoryGridVisible}
-        onClose={handleCloseGrid}
-        categories={[
-          {
-            id: "nutrition",
-            title: "Ernährung & Stoffwechsel",
-            icon: "🥗",
-            color: "#4CAF50",
-            progress: 85,
-            description: "Ausgewogene Ernährung"
-          },
-          {
-            id: "fitness",
-            title: "Bewegung & Fitness",
-            icon: "🏃‍♂️",
-            color: "#2196F3",
-            progress: 72,
-            description: "Regelmäßige Aktivität"
-          },
-          {
-            id: "sleep",
-            title: "Schlaf & Erholung",
-            icon: "😴",
-            color: "#FF9800",
-            progress: 68,
-            description: "Erholsamer Schlaf"
-          }
-        ]}
-        onCategoryPress={handleGridCategoryPress}
-        onAddCategory={handleGridAddCategory}
-      />
     </SafeAreaView>
   );
 };
@@ -344,10 +249,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 12,
     elevation: 8,
-  },
-  mainContent: {
-    flex: 1,
-    backgroundColor: Colors.white, // Explizit weiß setzen
   },
   
   // Premium Progress Section mit lebendigem Hintergrund
@@ -575,85 +476,17 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     marginBottom: 8,
   },
-
-  // Kategorien Section mit besserem Hintergrund
-  categoriesSection: {
-    flex: 1, // Nimmt den gesamten verfügbaren Platz ein
-    paddingBottom: 30, // Besserer Abstand vom unteren Rand
+  mainScrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 20,
+  },
+  bottomSpacer: {
+    height: 20,
+  },
+  safeArea: {
+    flex: 1,
     backgroundColor: Colors.white,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    marginTop: -40, // Stärker negativ um progressSection zu überdecken
-    paddingTop: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  sectionHeader: {
-    paddingHorizontal: 20,
-    marginBottom: 12,
-  },
-  sectionHeaderContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  sectionTitle: {
-    fontSize: 22,
-    fontWeight: '900',
-    color: Colors.text.dark,
-    marginBottom: 4,
-    letterSpacing: 0.5,
-  },
-  sectionSubtitle: {
-    fontSize: 14,
-    color: Colors.text.secondary,
-    fontWeight: '600',
-    lineHeight: 20,
-  },
-  categoriesContainer: {
-    paddingLeft: 20,
-    paddingBottom: 20, // Wieder hinzugefügt
-  },
-  categoriesScroll: {
-    paddingRight: 20,
-    backgroundColor: 'transparent', // Kein grauer Hintergrund zwischen Tiles
-  },
-
-  // Verbesserte Add Category Card
-  addCategoryCard: {
-    width: 180,
-    height: 140,
-    borderRadius: 24,
-    borderWidth: 2,
-    borderColor: Colors.primary,
-    borderStyle: 'dashed',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 122, 255, 0.08)',
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  addCategoryContent: {
-    alignItems: 'center',
-  },
-  addCategoryText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: Colors.primary,
-    marginTop: 8,
-    textAlign: 'center',
-    lineHeight: 18,
-    letterSpacing: 0.3,
-  },
-  gridButton: {
-    padding: 8,
-    borderRadius: 16,
-    backgroundColor: 'rgba(0, 122, 255, 0.08)',
   },
 }); 
