@@ -166,7 +166,7 @@ export default PersonalBoardScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFF', // Leicht bläulicher Hintergrund statt purem Weiß
+    backgroundColor: Colors.white, // Weiß statt bläulich
   },
   floatingMenuButton: {
     position: 'absolute',
@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flex: 1,
+    backgroundColor: Colors.white, // Explizit weiß setzen
   },
   
   // Premium Progress Section mit lebendigem Hintergrund
@@ -192,10 +193,12 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
     paddingTop: 40,
     paddingHorizontal: 20,
+    paddingBottom: 50, // Mehr Platz unten für besseren Übergang
     // Lebendiger Gradient-Hintergrund
     backgroundColor: '#F8FAFF',
     position: 'relative',
     overflow: 'hidden',
+    flex: 0, // Nimmt nur den benötigten Platz ein
   },
   brandingContainer: {
     alignItems: 'center',
@@ -407,16 +410,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '500',
     opacity: 0.8,
+    marginBottom: 8,
   },
 
   // Kategorien Section mit besserem Hintergrund
   categoriesSection: {
-    paddingBottom: 20,
+    flex: 1, // Nimmt den gesamten verfügbaren Platz ein
+    paddingBottom: 30, // Besserer Abstand vom unteren Rand
     backgroundColor: Colors.white,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    marginTop: -16,
-    paddingTop: 24,
+    marginTop: -40, // Stärker negativ um progressSection zu überdecken
+    paddingTop: 24, // Reduziert von 32
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.1,
@@ -425,13 +430,13 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     paddingHorizontal: 20,
-    marginBottom: 16,
+    marginBottom: 12, // Reduziert von 16
   },
   sectionTitle: {
     fontSize: 22,
     fontWeight: '900',
     color: Colors.text.dark,
-    marginBottom: 6,
+    marginBottom: 4, // Reduziert von 6
     letterSpacing: 0.5,
   },
   sectionSubtitle: {
@@ -442,6 +447,7 @@ const styles = StyleSheet.create({
   },
   categoriesContainer: {
     paddingLeft: 20,
+    paddingBottom: 20, // Weniger Platz unter den Tiles
   },
   categoriesScroll: {
     paddingRight: 20,
