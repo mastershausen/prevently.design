@@ -15,6 +15,7 @@ import { Colors } from '@/constants/Colors';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import Tile from './Tile';
 import MotivationCard from './MotivationCard';
+import Sidebar from './Sidebar';
 
 // Premium Radial Progress Circle Component
 const PremiumRadialProgress: React.FC<{ progress: number }> = ({ progress }) => {
@@ -90,8 +91,17 @@ const PersonalBoardScreen: React.FC = () => {
     setSidebarVisible(true);
   };
 
+  const handleCloseSidebar = () => {
+    setSidebarVisible(false);
+  };
+
   const handleAddCategory = () => {
     console.log('Add category pressed');
+  };
+
+  const handleMenuItemPress = (item: string) => {
+    console.log(`${item} pressed`);
+    setSidebarVisible(false);
   };
 
   return (
@@ -102,6 +112,13 @@ const PersonalBoardScreen: React.FC = () => {
       <TouchableOpacity onPress={handleMenuPress} style={styles.floatingMenuButton}>
         <IconSymbol name="line.3.horizontal" size={24} color={Colors.text.dark} />
       </TouchableOpacity>
+
+      {/* Sidebar */}
+      <Sidebar
+        visible={sidebarVisible}
+        onClose={handleCloseSidebar}
+        onMenuItemPress={handleMenuItemPress}
+      />
 
       <View style={styles.mainContent}>
         {/* Premium Präventionsscore Section */}
