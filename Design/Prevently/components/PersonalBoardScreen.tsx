@@ -1,51 +1,20 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
+import {
+  View,
+  Text,
+  StyleSheet,
   StatusBar,
   TouchableOpacity,
   Dimensions,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  Pressable
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Sidebar from './Sidebar';
-import { IconSymbol } from './ui/IconSymbol';
-import Colors from '../constants/Colors';
-import Tile, { CategoryData } from './Tile';
+import { Colors } from '@/constants/Colors';
+import { IconSymbol } from '@/components/ui/IconSymbol';
+import Tile from './Tile';
 import MotivationCard from './MotivationCard';
-
-// Beispiel-Daten für aktive Kategorien
-const activeCategoriesData: CategoryData[] = [
-  {
-    id: 1,
-    title: 'Ernährung & Stoffwechsel',
-    color: Colors.health.nutrition.bubble,
-    textColor: Colors.health.nutrition.text,
-    activeBigWins: 3,
-    totalBigWins: 5,
-    isActive: true
-  },
-  {
-    id: 2,
-    title: 'Bewegung & Fitness',
-    color: Colors.health.fitness.bubble,
-    textColor: Colors.health.fitness.text,
-    activeBigWins: 4,
-    totalBigWins: 6,
-    isActive: true
-  },
-  {
-    id: 3,
-    title: 'Schlaf & Erholung',
-    color: Colors.health.sleep.bubble,
-    textColor: Colors.health.sleep.text,
-    activeBigWins: 2,
-    totalBigWins: 5,
-    isActive: true
-  },
-];
 
 // Premium Radial Progress Circle Component
 const PremiumRadialProgress: React.FC<{ progress: number }> = ({ progress }) => {
@@ -57,68 +26,80 @@ const PremiumRadialProgress: React.FC<{ progress: number }> = ({ progress }) => 
         <Text style={styles.brandTagline}>Krankheiten vermeiden, statt sie zu heilen</Text>
       </View>
 
-      {/* Score Introduction */}
-      <Text style={styles.scoreIntroduction}>Dein Präventionsscore zeigt dir, wie gut du dich um deine Gesundheit kümmerst</Text>
+      {/* Motivierender Call-to-Action statt langweiliger Erklärung */}
+      <Text style={styles.motivationalText} numberOfLines={1} adjustsFontSizeToFit={true}>
+        🚀 Du rockst deine Gesundheit!
+      </Text>
 
       {/* Enhanced Progress Circle */}
       <View style={styles.progressContainer}>
+        {/* Floating Background Elements */}
+        <View style={styles.floatingElement1} />
+        <View style={styles.floatingElement2} />
+        <View style={styles.floatingElement3} />
+        
         <View style={styles.progressCircleOuter}>
           <LinearGradient
             colors={[
-              progress < 30 ? '#FF6B6B' : progress < 70 ? '#FFA726' : '#4CAF50',
-              progress < 30 ? '#FF8E8E' : progress < 70 ? '#FFB74D' : '#66BB6A',
-              progress < 30 ? '#FFAAAA' : progress < 70 ? '#FFC374' : '#81C784'
+              progress < 30 ? '#FF6B6B' : progress < 70 ? '#FF9800' : '#4CAF50',
+              progress < 30 ? '#FF8A80' : progress < 70 ? '#FFB74D' : '#66BB6A',
+              progress < 30 ? '#FFCDD2' : progress < 70 ? '#FFE0B2' : '#A5D6A7',
+              progress < 30 ? '#FFEBEE' : progress < 70 ? '#FFF3E0' : '#E8F5E8'
             ]}
             style={styles.progressGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
             <View style={styles.progressInner}>
-              <Text style={styles.progressNumber}>{progress}</Text>
-              <Text style={styles.progressPercent}>%</Text>
-              <Text style={styles.progressLabel}>Prävention</Text>
+              <View style={styles.scoreContainer}>
+                <Text style={styles.progressNumber}>{progress}</Text>
+              </View>
+              
+              {/* Floating Score Icon */}
+              <View style={styles.floatingScoreIcon}>
+                <Text style={styles.scoreEmoji}>⭐</Text>
+              </View>
             </View>
           </LinearGradient>
         </View>
         
-        {/* Progress Ring Animation Placeholder */}
-        <View style={styles.progressRing} />
+        {/* Multiple Progress Rings */}
+        <View style={styles.progressRing1} />
+        <View style={styles.progressRing2} />
       </View>
 
-      {/* Achievement Text */}
+      {/* Enhanced Achievement Text */}
       <View style={styles.achievementContainer}>
-        <Text style={styles.achievementText}>🎉 Ausgezeichnet!</Text>
+        <View style={styles.achievementBadge}>
+          <Text style={styles.achievementIcon}>🏆</Text>
+          <Text style={styles.achievementText}>Top Performer!</Text>
+        </View>
         <Text style={styles.lastImprovement}>Zuletzt verbessert: +5 Punkte am 15.12.2024</Text>
       </View>
     </View>
   );
 };
 
-export default function PersonalBoardScreen() {
+const PersonalBoardScreen: React.FC = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  
-  // Beispiel Präventionsscore - später aus State/Context
   const preventionScore = 72;
+  const activeCategoriesCount = 3; // Anzahl der aktiven Kategorien
 
-  const handleCategoryPress = (category: CategoryData) => {
-    console.log(`Category pressed: ${category.title}`);
-    // Hier später Navigation zu Big Wins Screen
+  // Handlers
+  const handleMenuPress = () => {
+    setSidebarVisible(true);
   };
 
   const handleAddCategory = () => {
     console.log('Add category pressed');
-    // Hier später Navigation zu Kategorie-Auswahl
   };
-
-  const openSidebar = () => setSidebarVisible(true);
-  const closeSidebar = () => setSidebarVisible(false);
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
       
       {/* Floating Sidebar Button */}
-      <TouchableOpacity onPress={openSidebar} style={styles.floatingMenuButton}>
+      <TouchableOpacity onPress={handleMenuPress} style={styles.floatingMenuButton}>
         <IconSymbol name="line.3.horizontal" size={24} color={Colors.text.dark} />
       </TouchableOpacity>
 
@@ -131,52 +112,62 @@ export default function PersonalBoardScreen() {
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Deine aktiven Bereiche</Text>
             <Text style={styles.sectionSubtitle}>
-              {activeCategoriesData.length} von 13 Kategorien aktiviert • Du bist auf einem super Weg! 💪
+              {activeCategoriesCount} von 13 Kategorien aktiviert • Du bist auf einem super Weg! 💪
             </Text>
           </View>
 
-          <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.categoriesScroll}
-            style={styles.categoriesContainer}
-          >
-            {activeCategoriesData.map((category) => (
-              <Tile
-                key={category.id}
-                category={category}
-                onPress={handleCategoryPress}
-              />
-            ))}
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoriesScroll}>
+            <Tile
+              id="nutrition"
+              title="Ernährung & Stoffwechsel"
+              icon="🥗"
+              progress={85}
+              description="Ausgewogene Ernährung"
+              color="#4CAF50"
+              onPress={() => console.log('Ernährung pressed')}
+            />
+            <Tile
+              id="fitness"
+              title="Bewegung & Fitness"
+              icon="🏃‍♂️"
+              progress={72}
+              description="Regelmäßige Aktivität"
+              color="#2196F3"
+              onPress={() => console.log('Fitness pressed')}
+            />
+            <Tile
+              id="sleep"
+              title="Schlaf & Erholung"
+              icon="😴"
+              progress={68}
+              description="Erholsamer Schlaf"
+              color="#FF9800"
+              onPress={() => console.log('Schlaf pressed')}
+            />
             
             {/* Add Category Card */}
-            <TouchableOpacity 
-              style={styles.addCategoryCard}
-              onPress={handleAddCategory}
-              activeOpacity={0.8}
-            >
+            <Pressable style={styles.addCategoryCard} onPress={handleAddCategory}>
               <View style={styles.addCategoryContent}>
-                <IconSymbol name="plus.circle" size={32} color={Colors.primary} />
-                <Text style={styles.addCategoryText}>Weitere Kategorie aktivieren</Text>
+                <Text style={{ fontSize: 32, color: Colors.primary }}>➕</Text>
+                <Text style={styles.addCategoryText}>Weitere{'\n'}Kategorie{'\n'}hinzufügen</Text>
               </View>
-            </TouchableOpacity>
+            </Pressable>
           </ScrollView>
         </View>
 
         {/* Motivation Card */}
-        <MotivationCard activeCategoriesCount={activeCategoriesData.length} />
+        <MotivationCard activeCategoriesCount={activeCategoriesCount} />
       </ScrollView>
-
-      {/* Sidebar */}
-      <Sidebar isVisible={sidebarVisible} onClose={closeSidebar} />
     </SafeAreaView>
   );
-}
+};
+
+export default PersonalBoardScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: '#F8FAFF', // Leicht bläulicher Hintergrund statt purem Weiß
   },
   floatingMenuButton: {
     position: 'absolute',
@@ -196,145 +187,259 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   
-  // Premium Progress Section
+  // Premium Progress Section mit lebendigem Hintergrund
   progressSection: {
     alignItems: 'center',
     paddingVertical: 60,
     paddingTop: 80,
     paddingHorizontal: 20,
-    backgroundColor: 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)',
+    // Lebendiger Gradient-Hintergrund
+    backgroundColor: '#F8FAFF',
+    position: 'relative',
+    overflow: 'hidden',
   },
   brandingContainer: {
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: 20,
+    zIndex: 10,
   },
   brandName: {
-    fontSize: 32,
+    fontSize: 34,
     fontWeight: '900',
     color: Colors.primary,
-    letterSpacing: 1,
+    letterSpacing: 1.5,
     marginBottom: 4,
+    textShadowColor: 'rgba(0, 122, 255, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   brandTagline: {
-    fontSize: 14,
+    fontSize: 15,
     color: Colors.text.secondary,
-    fontWeight: '500',
+    fontWeight: '600',
     textAlign: 'center',
     fontStyle: 'italic',
+    opacity: 0.8,
   },
-  scoreIntroduction: {
-    fontSize: 16,
-    color: Colors.text.secondary,
+  motivationalText: {
+    fontSize: 18,
+    color: Colors.primary,
     textAlign: 'center',
     marginBottom: 32,
-    lineHeight: 22,
-    maxWidth: 280,
-    fontWeight: '500',
+    lineHeight: 24,
+    maxWidth: 320,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
   progressContainer: {
     position: 'relative',
-    marginBottom: 24,
+    marginBottom: 28,
+    zIndex: 5,
   },
   progressCircleOuter: {
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-    padding: 12,
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    padding: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.15,
-    shadowRadius: 24,
-    elevation: 12,
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.25,
+    shadowRadius: 32,
+    elevation: 16,
+    // Zusätzlicher Glow-Effekt
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.5)',
   },
   progressGradient: {
     flex: 1,
-    borderRadius: 84,
+    borderRadius: 92,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
   },
   progressInner: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
+    width: 140,
+    height: 140,
+    borderRadius: 70,
     backgroundColor: Colors.white,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
+    elevation: 12,
+    position: 'relative',
+  },
+  scoreContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   progressNumber: {
-    fontSize: 36,
-    fontWeight: '800',
+    fontSize: 54,
+    fontWeight: '900',
     color: Colors.text.dark,
-    lineHeight: 40,
+    lineHeight: 60,
+    textShadowColor: 'rgba(0, 0, 0, 0.1)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   progressPercent: {
-    fontSize: 20,
-    fontWeight: '600',
+    fontSize: 22,
+    fontWeight: '700',
     color: Colors.text.secondary,
-    position: 'absolute',
-    top: 35,
-    right: 25,
+    marginLeft: 2,
+    marginTop: -10,
   },
   progressLabel: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: '700',
     color: Colors.text.secondary,
-    marginTop: -4,
-    letterSpacing: 0.5,
+    marginTop: 4,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
   },
-  progressRing: {
+  // Schwebende Hintergrund-Elemente
+  floatingElement1: {
     position: 'absolute',
-    top: -6,
-    left: -6,
-    width: 192,
-    height: 192,
-    borderRadius: 96,
-    borderWidth: 2,
-    borderColor: 'rgba(76, 175, 80, 0.2)',
+    top: -50,
+    left: -50,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: 'rgba(76, 175, 80, 0.08)',
+    zIndex: 1,
+  },
+  floatingElement2: {
+    position: 'absolute',
+    top: 40,
+    right: -40,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: 'rgba(0, 122, 255, 0.08)',
+    zIndex: 1,
+  },
+  floatingElement3: {
+    position: 'absolute',
+    bottom: -30,
+    left: 60,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'rgba(255, 152, 0, 0.08)',
+    zIndex: 1,
+  },
+  floatingScoreIcon: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255, 215, 0, 0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#FFD700',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  scoreEmoji: {
+    fontSize: 18,
+  },
+  progressRing1: {
+    position: 'absolute',
+    top: -8,
+    left: -8,
+    width: 216,
+    height: 216,
+    borderRadius: 108,
+    borderWidth: 1,
+    borderColor: 'rgba(76, 175, 80, 0.15)',
     borderStyle: 'dashed',
+    zIndex: 2,
+  },
+  progressRing2: {
+    position: 'absolute',
+    top: -15,
+    left: -15,
+    width: 230,
+    height: 230,
+    borderRadius: 115,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 122, 255, 0.1)',
+    borderStyle: 'solid',
+    zIndex: 1,
   },
   achievementContainer: {
     alignItems: 'center',
+    zIndex: 10,
+  },
+  achievementBadge: {
+    backgroundColor: Colors.primary,
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    marginBottom: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  achievementIcon: {
+    fontSize: 20,
+    marginRight: 6,
   },
   achievementText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '700',
-    color: Colors.text.dark,
-    marginBottom: 8,
+    color: Colors.white,
+    letterSpacing: 0.5,
   },
   lastImprovement: {
     fontSize: 14,
     color: Colors.text.secondary,
     textAlign: 'center',
     fontWeight: '500',
+    opacity: 0.8,
   },
 
-  // Kategorien Section
+  // Kategorien Section mit besserem Hintergrund
   categoriesSection: {
     paddingBottom: 20,
     backgroundColor: Colors.white,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    marginTop: -24,
+    paddingTop: 32,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 8,
   },
   sectionHeader: {
     paddingHorizontal: 20,
-    marginBottom: 20,
-    marginTop: 8,
+    marginBottom: 24,
   },
   sectionTitle: {
-    fontSize: 22,
-    fontWeight: '800',
+    fontSize: 24,
+    fontWeight: '900',
     color: Colors.text.dark,
-    marginBottom: 6,
+    marginBottom: 8,
+    letterSpacing: 0.5,
   },
   sectionSubtitle: {
-    fontSize: 15,
+    fontSize: 16,
     color: Colors.text.secondary,
-    fontWeight: '500',
-    lineHeight: 20,
+    fontWeight: '600',
+    lineHeight: 22,
   },
   categoriesContainer: {
     paddingLeft: 20,
@@ -343,27 +448,33 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
 
-  // Add Category Card
+  // Verbesserte Add Category Card
   addCategoryCard: {
     width: 180,
     height: 120,
-    borderRadius: 16,
+    borderRadius: 20,
     borderWidth: 2,
     borderColor: Colors.primary,
     borderStyle: 'dashed',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 122, 255, 0.05)',
+    backgroundColor: 'rgba(0, 122, 255, 0.08)',
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
   },
   addCategoryContent: {
     alignItems: 'center',
   },
   addCategoryText: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: '700',
     color: Colors.primary,
     marginTop: 8,
     textAlign: 'center',
     lineHeight: 18,
+    letterSpacing: 0.3,
   },
 }); 
