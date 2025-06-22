@@ -142,11 +142,6 @@ const ExpandableBottomSheet: React.FC<ExpandableBottomSheetProps> = ({
         }
       ]}
     >
-      {/* Drag Handle */}
-      <TouchableOpacity onPress={toggleExpanded} style={styles.dragHandle}>
-        <View style={styles.dragBar} />
-      </TouchableOpacity>
-
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerContent}>
@@ -185,23 +180,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    paddingTop: 8,
+    paddingTop: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.1,
     shadowRadius: 12,
     elevation: 8,
-  },
-  dragHandle: {
-    alignSelf: 'center',
-    paddingVertical: 8,
-  },
-  dragBar: {
-    width: 40,
-    height: 4,
-    backgroundColor: Colors.text.secondary,
-    borderRadius: 2,
-    opacity: 0.3,
   },
   header: {
     paddingHorizontal: 20,
@@ -231,7 +215,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   expandButton: {
-    padding: 8,
+    padding: 0,
     borderRadius: 8,
     backgroundColor: 'transparent',
     alignSelf: 'flex-start',
