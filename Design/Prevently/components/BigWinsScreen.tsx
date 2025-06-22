@@ -8,11 +8,12 @@ import {
   ScrollView,
   SafeAreaView,
   Dimensions,
-  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '@/constants/Colors';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import ExpertCard from './ExpertCard';
+import BigWinsCard from './BigWinsCard';
 
 const { width } = Dimensions.get('window');
 
@@ -34,6 +35,9 @@ interface Expert {
   name: string;
   image: string;
   description: string;
+  detailedDescription: string;
+  specialties: string[];
+  experience: string;
   contactLink: string;
 }
 
@@ -54,7 +58,6 @@ const BigWinsScreen: React.FC<BigWinsScreenProps> = ({
   progress,
   onBack
 }) => {
-  const [expandedInfo, setExpandedInfo] = useState<string | null>(null);
   const [actionStatuses, setActionStatuses] = useState<Record<string, string>>({});
 
   // Big Wins Daten pro Kategorie
@@ -190,14 +193,20 @@ const BigWinsScreen: React.FC<BigWinsScreenProps> = ({
           id: '1', 
           name: 'Dr. Sarah Weber', 
           image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100&h=100&fit=crop&crop=face', 
-          description: 'Ernährungsmedizinerin', 
+          description: 'Ernährungsärztin', 
+          detailedDescription: 'Dr. Sarah Weber ist spezialisiert auf präventive Ernährungsmedizin und hilft Menschen dabei, durch bewusste Ernährung chronische Krankheiten zu verhindern. Sie kombiniert neueste wissenschaftliche Erkenntnisse mit praktischen Alltagstipps.',
+          specialties: ['Anti-Aging-Ernährung', 'Diabetes-Prävention', 'Darmgesundheit'],
+          experience: '12 Jahre klinische Erfahrung',
           contactLink: '@dr.sarah.nutrition' 
         },
         { 
           id: '2', 
           name: 'Max Müller', 
           image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face', 
-          description: 'Healthy Food Coach', 
+          description: 'Food Coach', 
+          detailedDescription: 'Max hat über 1000 Menschen dabei geholfen, ihre Essgewohnheiten nachhaltig zu verändern. Sein Fokus liegt auf einfachen, alltagstauglichen Lösungen ohne Verzicht oder komplizierte Diäten.',
+          specialties: ['Meal Prep', 'Gewichtsmanagement', 'Intuitive Ernährung'],
+          experience: '8 Jahre Coaching-Erfahrung',
           contactLink: '@max.healthy.coach' 
         },
       ],
@@ -207,13 +216,19 @@ const BigWinsScreen: React.FC<BigWinsScreenProps> = ({
           name: 'Lisa Kraft', 
           image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face', 
           description: 'Personal Trainerin', 
+          detailedDescription: 'Lisa entwickelt individuelle Trainingspläne für Menschen, die wenig Zeit haben aber maximale Ergebnisse wollen. Ihre Spezialität sind effektive 20-30 Minuten Workouts für Zuhause.',
+          specialties: ['HIIT-Training', 'Kraftaufbau', 'Rücken-Fitness'],
+          experience: '10 Jahre Personal Training',
           contactLink: '@lisa.kraft.fitness' 
         },
         { 
           id: '2', 
           name: 'Tom Athletik', 
           image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', 
-          description: 'Bewegungs-Therapeut', 
+          description: 'Bewegungstherapeut', 
+          detailedDescription: 'Tom hilft Menschen mit Verspannungen, Rückenschmerzen und Bewegungseinschränkungen. Er zeigt einfache Übungen, die sich perfekt in den Büroalltag integrieren lassen.',
+          specialties: ['Haltungskorrektur', 'Schmerztherapie', 'Mobility Training'],
+          experience: '15 Jahre therapeutische Erfahrung',
           contactLink: '@tom.movement' 
         },
       ],
@@ -223,6 +238,9 @@ const BigWinsScreen: React.FC<BigWinsScreenProps> = ({
           name: 'Dr. Michael Schlaf', 
           image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=100&h=100&fit=crop&crop=face', 
           description: 'Schlafmediziner', 
+          detailedDescription: 'Dr. Schlaf ist einer der führenden Experten für Schlafoptimierung in Deutschland. Er hat bereits hunderten von Patienten zu besserem Schlaf verholfen - ohne Medikamente, nur durch natürliche Methoden.',
+          specialties: ['Schlafoptimierung', 'Insomnie-Behandlung', 'Schlafhygiene'],
+          experience: '18 Jahre Schlafmedizin',
           contactLink: '@dr.schlaf.experte' 
         },
       ]
@@ -263,15 +281,13 @@ const BigWinsScreen: React.FC<BigWinsScreenProps> = ({
       ...prev,
       [actionId]: status
     }));
+    // Auto-Save: Hier würde die sofortige Speicherung passieren
+    console.log(`Auto-saving: ${actionId} = ${status}`);
   };
 
-  const toggleInfo = (actionId: string) => {
-    setExpandedInfo(expandedInfo === actionId ? null : actionId);
-  };
-
-  const handleSave = () => {
-    console.log('Saving statuses:', actionStatuses);
-    // Hier würde die Speicherung und Score-Update passieren
+  const handleExpertContact = (expert: Expert) => {
+    console.log(`Kontakt zu ${expert.name}: ${expert.contactLink}`);
+    // Hier würde die Kontaktaufnahme passieren
   };
 
   return (
@@ -284,9 +300,6 @@ const BigWinsScreen: React.FC<BigWinsScreenProps> = ({
           <IconSymbol name="chevron.left" size={24} color={Colors.text.dark} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Big Wins</Text>
-        <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
-          <Text style={styles.saveButtonText}>Speichern</Text>
-        </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -317,79 +330,12 @@ const BigWinsScreen: React.FC<BigWinsScreenProps> = ({
         {/* Big Wins List */}
         <View style={styles.winsSection}>
           {bigWins.map((action, index) => (
-            <View key={action.id} style={styles.actionCard}>
-              {/* Action Header */}
-              <View style={styles.actionHeader}>
-                <View style={styles.actionTitleRow}>
-                  <Text style={styles.actionTitle}>{action.title}</Text>
-                  <TouchableOpacity 
-                    onPress={() => toggleInfo(action.id)}
-                    style={styles.infoButton}
-                  >
-                    <IconSymbol 
-                      name="info.circle" 
-                      size={20} 
-                      color={Colors.primary} 
-                    />
-                  </TouchableOpacity>
-                </View>
-                <Text style={styles.actionDescription}>{action.description}</Text>
-              </View>
-
-              {/* Expanded Info */}
-              {expandedInfo === action.id && (
-                <View style={styles.infoExpanded}>
-                  <View style={styles.infoItem}>
-                    <Text style={styles.infoLabel}>Was ist das?</Text>
-                    <Text style={styles.infoText}>{action.infoDetails.whatIs}</Text>
-                  </View>
-                  <View style={styles.infoItem}>
-                    <Text style={styles.infoLabel}>Warum sinnvoll?</Text>
-                    <Text style={styles.infoText}>{action.infoDetails.whyUseful}</Text>
-                  </View>
-                  <View style={styles.infoItem}>
-                    <Text style={styles.infoLabel}>Wie umsetzen?</Text>
-                    <Text style={styles.infoText}>{action.infoDetails.howToImplement}</Text>
-                  </View>
-                  {action.infoDetails.affiliateLink && (
-                    <TouchableOpacity style={styles.affiliateButton}>
-                      <Text style={styles.affiliateButtonText}>Empfohlene Produkte ansehen</Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-              )}
-
-              {/* Status Selection */}
-              <View style={styles.statusSection}>
-                <Text style={styles.statusLabel}>Wie stehst du zu dieser Maßnahme?</Text>
-                <View style={styles.statusButtons}>
-                  {[
-                    { key: 'implementing', label: 'Setze ich schon um', color: '#4CAF50' },
-                    { key: 'want_to', label: 'Will ich umsetzen', color: Colors.primary },
-                    { key: 'not_relevant', label: 'Nicht relevant', color: '#FF6B6B' }
-                  ].map((option) => (
-                    <TouchableOpacity
-                      key={option.key}
-                      style={[
-                        styles.statusButton,
-                        actionStatuses[action.id] === option.key && { 
-                          backgroundColor: option.color,
-                          borderColor: option.color 
-                        }
-                      ]}
-                      onPress={() => handleStatusChange(action.id, option.key)}
-                    >
-                      <Text style={[
-                        styles.statusButtonText,
-                        actionStatuses[action.id] === option.key && { color: 'white' }
-                      ]}>
-                        {option.label}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
-            </View>
+            <BigWinsCard
+              key={action.id}
+              action={action}
+              onStatusChange={handleStatusChange}
+              initialStatus={actionStatuses[action.id]}
+            />
           ))}
         </View>
 
@@ -401,20 +347,7 @@ const BigWinsScreen: React.FC<BigWinsScreenProps> = ({
           </Text>
           
           {experts.map((expert) => (
-            <View key={expert.id} style={styles.expertCard}>
-              <Image source={{ uri: expert.image }} style={styles.expertImage} />
-              <View style={styles.expertInfo}>
-                <Text style={styles.expertName}>{expert.name}</Text>
-                <Text style={styles.expertDescription}>{expert.description}</Text>
-              </View>
-              <TouchableOpacity 
-                style={styles.expertContact}
-                onPress={() => console.log(`Kontakt zu ${expert.name}: ${expert.contactLink}`)}
-              >
-                <Text style={styles.expertContactText}>Jetzt buchen</Text>
-                <IconSymbol name="arrow.right" size={16} color="white" />
-              </TouchableOpacity>
-            </View>
+            <ExpertCard key={expert.id} expert={expert} onContact={() => handleExpertContact(expert)} />
           ))}
         </View>
       </ScrollView>
@@ -447,16 +380,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     color: Colors.text.dark,
     marginLeft: 16,
-  },
-  saveButton: {
-    padding: 8,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0, 122, 255, 0.1)',
-  },
-  saveButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: Colors.primary,
+    flex: 1,
   },
   content: {
     flex: 1,
@@ -517,95 +441,6 @@ const styles = StyleSheet.create({
   winsSection: {
     padding: 20,
   },
-  actionCard: {
-    backgroundColor: Colors.white,
-    borderRadius: 20,
-    padding: 20,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 122, 255, 0.1)',
-  },
-  actionHeader: {
-    marginBottom: 12,
-  },
-  actionTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  actionTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: Colors.text.dark,
-    marginRight: 8,
-  },
-  infoButton: {
-    padding: 8,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0, 122, 255, 0.1)',
-  },
-  actionDescription: {
-    fontSize: 16,
-    color: Colors.text.dark,
-    lineHeight: 22,
-  },
-  infoExpanded: {
-    marginTop: 12,
-  },
-  infoItem: {
-    marginBottom: 8,
-  },
-  infoLabel: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: Colors.text.dark,
-  },
-  infoText: {
-    fontSize: 16,
-    color: Colors.text.dark,
-    lineHeight: 22,
-  },
-  affiliateButton: {
-    backgroundColor: Colors.primary,
-    padding: 12,
-    borderRadius: 16,
-    alignItems: 'center',
-  },
-  affiliateButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: Colors.white,
-  },
-  statusSection: {
-    marginTop: 12,
-  },
-  statusLabel: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: Colors.text.dark,
-    marginBottom: 8,
-  },
-  statusButtons: {
-    flexDirection: 'column',
-    gap: 8,
-  },
-  statusButton: {
-    padding: 12,
-    borderWidth: 2,
-    borderColor: 'rgba(0, 122, 255, 0.2)',
-    borderRadius: 16,
-    backgroundColor: 'rgba(0, 122, 255, 0.05)',
-  },
-  statusButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: Colors.text.dark,
-    textAlign: 'center',
-  },
 
   // Experts Section
   expertsSection: {
@@ -621,52 +456,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.text.secondary,
     marginBottom: 20,
-  },
-  expertCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 122, 255, 0.1)',
-    borderRadius: 16,
-    marginBottom: 16,
-  },
-  expertImage: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    marginRight: 12,
-  },
-  expertInfo: {
-    flex: 1,
-  },
-  expertName: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: Colors.text.dark,
-    marginBottom: 2,
-  },
-  expertDescription: {
-    fontSize: 16,
-    color: Colors.text.secondary,
-  },
-  expertContact: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.primary,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 20,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  expertContactText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: 'white',
-    marginRight: 8,
   },
 }); 
