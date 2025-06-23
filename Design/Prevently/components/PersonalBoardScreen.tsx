@@ -155,77 +155,79 @@ const PersonalBoardScreen: React.FC = () => {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
-        
-        {/* Floating Sidebar Button */}
-        <TouchableOpacity onPress={handleMenuPress} style={styles.floatingMenuButton}>
-          <IconSymbol name="line.3.horizontal" size={24} color={Colors.text.dark} />
-        </TouchableOpacity>
-
-        {/* Sidebar */}
-        <Sidebar
-          visible={sidebarVisible}
-          onClose={handleCloseSidebar}
-          onMenuItemPress={handleMenuItemPress}
-        />
-
-        {/* Main Content Area */}
-        <ScrollView 
-          style={styles.mainScrollView}
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Premium Präventionsscore Section */}
-          <PremiumRadialProgress progress={preventionScore} />
+    <View style={styles.fullScreenContainer}>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <StatusBar barStyle="dark-content" />
           
-          {/* Spacer für Bottom Sheet */}
-          <View style={styles.bottomSpacer} />
-        </ScrollView>
+          {/* Floating Sidebar Button */}
+          <TouchableOpacity onPress={handleMenuPress} style={styles.floatingMenuButton}>
+            <IconSymbol name="line.3.horizontal" size={24} color={Colors.text.dark} />
+          </TouchableOpacity>
 
-        {/* Expandable Bottom Sheet für Kategorien */}
-        <ExpandableBottomSheet
-          categories={[
-            {
-              id: "nutrition",
-              title: "Ernährung & Stoffwechsel",
-              icon: "🥗",
-              color: "#4CAF50",
-              progress: 85,
-              description: "Ausgewogene Ernährung"
-            },
-            {
-              id: "fitness",
-              title: "Bewegung & Fitness",
-              icon: "🏃‍♂️",
-              color: "#2196F3",
-              progress: 72,
-              description: "Regelmäßige Aktivität"
-            },
-            {
-              id: "sleep",
-              title: "Schlaf & Erholung",
-              icon: "😴",
-              color: "#FF9800",
-              progress: 68,
-              description: "Erholsamer Schlaf"
-            }
-          ]}
-          activeCategoriesCount={activeCategoriesCount}
-          onCategoryPress={handleTilePress}
-          onAddCategory={handleAddCategory}
-        />
+          {/* Sidebar */}
+          <Sidebar
+            visible={sidebarVisible}
+            onClose={handleCloseSidebar}
+            onMenuItemPress={handleMenuItemPress}
+          />
 
-        {/* Category Selection Modal */}
-        <CategorySelectionModal
-          visible={categoryModalVisible}
-          onClose={handleCloseCategoryModal}
-          onSelectCategory={handleSelectCategory}
-          activeCategories={activeCategories}
-        />
-      </View>
-    </SafeAreaView>
+          {/* Main Content Area */}
+          <ScrollView 
+            style={styles.mainScrollView}
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+          >
+            {/* Premium Präventionsscore Section */}
+            <PremiumRadialProgress progress={preventionScore} />
+            
+            {/* Spacer für Bottom Sheet */}
+            <View style={styles.bottomSpacer} />
+          </ScrollView>
+
+          {/* Expandable Bottom Sheet für Kategorien */}
+          <ExpandableBottomSheet
+            categories={[
+              {
+                id: "nutrition",
+                title: "Ernährung & Stoffwechsel",
+                icon: "🥗",
+                color: "#4CAF50",
+                progress: 85,
+                description: "Ausgewogene Ernährung"
+              },
+              {
+                id: "fitness",
+                title: "Bewegung & Fitness",
+                icon: "🏃‍♂️",
+                color: "#2196F3",
+                progress: 72,
+                description: "Regelmäßige Aktivität"
+              },
+              {
+                id: "sleep",
+                title: "Schlaf & Erholung",
+                icon: "😴",
+                color: "#FF9800",
+                progress: 68,
+                description: "Erholsamer Schlaf"
+              }
+            ]}
+            activeCategoriesCount={activeCategoriesCount}
+            onCategoryPress={handleTilePress}
+            onAddCategory={handleAddCategory}
+          />
+
+          {/* Category Selection Modal */}
+          <CategorySelectionModal
+            visible={categoryModalVisible}
+            onClose={handleCloseCategoryModal}
+            onSelectCategory={handleSelectCategory}
+            activeCategories={activeCategories}
+          />
+        </View>
+      </SafeAreaView>
+    </View>
   );
 };
 
@@ -234,11 +236,11 @@ export default PersonalBoardScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.white, // Weiß statt bläulich
+    backgroundColor: '#F8FAFF', // Bläulicher Hintergrund statt weiß
   },
   floatingMenuButton: {
     position: 'absolute',
-    top: 60,
+    top: 20,
     left: 20,
     zIndex: 100,
     padding: 12,
@@ -256,10 +258,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 50,
     paddingTop: 40,
-    paddingHorizontal: 20,
     paddingBottom: 60,
     // Lebendiger Gradient-Hintergrund
-    backgroundColor: '#F8FAFF',
+    backgroundColor: '#F8FAFF', // Der bläuliche Hintergrund wieder zurück
     position: 'relative',
     overflow: 'hidden',
     flex: 0, // Nimmt nur den benötigten Platz ein
@@ -480,13 +481,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: 20,
+    padding: 20, // Padding wieder zurück für richtige Positionierung
   },
   bottomSpacer: {
     height: 20,
   },
   safeArea: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: '#F8FAFF', // Bläulicher Hintergrund in der SafeArea
+  },
+  fullScreenContainer: {
+    flex: 1,
+    backgroundColor: '#F8FAFF', // Auch hier bläulich für den Bereich außerhalb der SafeArea
   },
 }); 
