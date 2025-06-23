@@ -63,41 +63,9 @@ const AboutScreen: React.FC<AboutScreenProps> = ({ onBack }) => {
                     "Krankheiten vermeiden, statt sie zu heilen"
                   </Text>
                   <Text style={styles.cardDescription}>
-                    Es geht nicht nur darum, alt zu werden. Es geht darum, deine Jahre mit Leben zu füllen. 
-                    Energie zu haben für das, was dir wichtig ist. Gesund zu bleiben, damit du das Leben 
-                    genießen kannst - nicht irgendwann, sondern jetzt.
-                  </Text>
-                </View>
-              </LinearGradient>
-            </BlurView>
-          </View>
-
-          {/* Why Card */}
-          <View style={styles.card}>
-            <BlurView intensity={15} tint="light" style={styles.cardBlur}>
-              <LinearGradient
-                colors={[
-                  'rgba(255, 255, 255, 0.95)',
-                  'rgba(255, 255, 255, 0.85)',
-                  'rgba(248, 250, 255, 0.90)'
-                ]}
-                style={styles.cardGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <View style={[styles.floatingElement1, { backgroundColor: 'rgba(76, 175, 80, 0.08)' }]} />
-                <View style={[styles.floatingElement2, { backgroundColor: 'rgba(255, 152, 0, 0.06)' }]} />
-                
-                <View style={styles.cardContent}>
-                  <Text style={styles.cardIcon}>💎</Text>
-                  <Text style={styles.cardTitle}>Warum weniger mehr ist</Text>
-                  <Text style={styles.cardText}>
-                    "Die wichtigsten 5% machen 95% des Unterschieds."
-                  </Text>
-                  <Text style={styles.cardDescription}>
-                    Du kennst es: Überall liest du, was du alles tun solltest. 50 Supplements, 20 Diäten, 
-                    100 Tipps. Aber ehrlich? Das macht niemand durch. Wir konzentrieren uns auf die 
-                    wenigen Dinge, die wirklich zählen. Die, die du spürst.
+                    Deine Zeit ist zu wertvoll für Wartezimmer. Wir möchten, dass du ein Leben voller 
+                    Energie führst. Mit wenigen einfachen Gewohnheiten lässt sich das erreichen. 
+                    Dabei helfen wir dir auf einfache und bezahlbare Weise.
                   </Text>
                 </View>
               </LinearGradient>
@@ -127,9 +95,41 @@ const AboutScreen: React.FC<AboutScreenProps> = ({ onBack }) => {
                     "Gesund leben heißt auch das Leben zu genießen."
                   </Text>
                   <Text style={styles.cardDescription}>
-                    Gesundheit ist kein Verzicht. Es ist Freiheit. Die Freiheit, zu essen was du willst, 
-                    zu reisen wohin du willst, zu machen was du willst. Unsere Big Wins sorgen dafür, 
-                    dass du diese Freiheit behältst - ohne dass du dich wie ein Mönch verhalten musst.
+                    Gesundheit entsteht durch Balance, nicht durch Verzicht. Die richtigen Grundlagen 
+                    schaffen Raum für Spontaneität und Lebensfreude. Wir glauben daran, dass sich 
+                    gesunde Entscheidungen gut anfühlen sollten.
+                  </Text>
+                </View>
+              </LinearGradient>
+            </BlurView>
+          </View>
+
+          {/* Why Card */}
+          <View style={styles.card}>
+            <BlurView intensity={15} tint="light" style={styles.cardBlur}>
+              <LinearGradient
+                colors={[
+                  'rgba(255, 255, 255, 0.95)',
+                  'rgba(255, 255, 255, 0.85)',
+                  'rgba(248, 250, 255, 0.90)'
+                ]}
+                style={styles.cardGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+              >
+                <View style={[styles.floatingElement1, { backgroundColor: 'rgba(76, 175, 80, 0.08)' }]} />
+                <View style={[styles.floatingElement2, { backgroundColor: 'rgba(255, 152, 0, 0.06)' }]} />
+                
+                <View style={styles.cardContent}>
+                  <Text style={styles.cardIcon}>💎</Text>
+                  <Text style={styles.cardTitle}>Warum weniger mehr ist</Text>
+                  <Text style={styles.cardText}>
+                    "Die wichtigsten 5% machen 95% des Unterschieds."
+                  </Text>
+                  <Text style={styles.cardDescription}>
+                    Information gibt es genug. Was fehlt, ist Klarheit über das Wesentliche. Wir 
+                    konzentrieren uns auf die wenigen Dinge, die den größten Unterschied machen. 
+                    So bleibt Gesundheit einfach und umsetzbar.
                   </Text>
                 </View>
               </LinearGradient>
@@ -159,9 +159,9 @@ const AboutScreen: React.FC<AboutScreenProps> = ({ onBack }) => {
                     "Ehrliche Empfehlungen. Faire Deals."
                   </Text>
                   <Text style={styles.cardDescription}>
-                    Keine endlosen Listen. Keine überteuerten "Wunder-Produkte". Nur das, was wirklich 
-                    funktioniert. Dazu bekommst du oft exklusive Rabatte und bessere Konditionen. 
-                    Weil wir nur dann etwas verdienen, wenn du zufrieden bist.
+                    Wir empfehlen nur, was wir selbst nutzen würden. Dazu verhandeln wir bessere 
+                    Konditionen für unsere Community. Transparenz ist uns wichtiger als schnelle 
+                    Verkäufe. Dein Vertrauen ist unser wichtigstes Gut.
                   </Text>
                 </View>
               </LinearGradient>
