@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import { Colors } from '@/constants/Colors';
 
@@ -26,7 +27,12 @@ const FilterTab: React.FC<FilterTabProps> = ({
   onCategorySelect,
 }) => {
   return (
-    <View style={styles.container}>
+    <ScrollView 
+      horizontal 
+      showsHorizontalScrollIndicator={false}
+      style={styles.scrollView}
+      contentContainerStyle={styles.container}
+    >
       {categories.map((category) => (
         <TouchableOpacity
           key={category.id}
@@ -46,41 +52,45 @@ const FilterTab: React.FC<FilterTabProps> = ({
           </Text>
         </TouchableOpacity>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
 export default FilterTab;
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingHorizontal: 20,
+  scrollView: {
     marginBottom: 16,
+    maxHeight: 40,
+    flexShrink: 1,
+  },
+  container: {
+    paddingHorizontal: 20,
+    alignItems: 'center',
   },
   tab: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
-    paddingVertical: 2,
+    paddingVertical: 4,
     marginRight: 8,
     borderRadius: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.08)',
+    borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   tabActive: {
     backgroundColor: Colors.primary,
     borderColor: Colors.primary,
   },
   icon: {
-    fontSize: 12,
-    marginRight: 4,
+    fontSize: 13,
+    marginRight: 5,
   },
   text: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '600',
-    color: Colors.text.secondary,
+    color: Colors.text.dark,
   },
   textActive: {
     color: Colors.white,
