@@ -155,6 +155,7 @@ const PersonalBoardScreen: React.FC = () => {
 
   const handleCloseAbout = () => {
     setAboutVisible(false);
+    setSidebarVisible(true);
   };
 
   // DealsScreen anzeigen wenn sichtbar

@@ -62,7 +62,7 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, onMenuItemPress }) 
                 onPress={() => handleMenuItemPress('Deals')}
               >
                 <View style={styles.menuItemIcon}>
-                  <IconSymbol name="tag" size={20} color={Colors.primary} />
+                  <IconSymbol name="tag.fill" size={20} color={Colors.primary} />
                 </View>
                 <Text style={styles.menuItemText}>Deals</Text>
                 <IconSymbol name="chevron.right" size={16} color={Colors.text.secondary} />
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
   sidebar: {
     flex: 1,
-    paddingTop: 60,
+    paddingTop: 80,
     paddingHorizontal: 24,
     paddingBottom: 30,
     position: 'relative',
