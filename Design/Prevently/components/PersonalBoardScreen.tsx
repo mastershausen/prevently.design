@@ -14,6 +14,7 @@ import { Colors } from '@/constants/Colors';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import Sidebar from './Sidebar';
 import BigWinsScreen from './BigWinsScreen';
+import DealsScreen from './DealsScreen';
 import CategorySelectionModal from './CategorySelectionModal';
 import ExpandableBottomSheet from './ExpandableBottomSheet';
 
@@ -84,6 +85,7 @@ const PremiumRadialProgress: React.FC<{ progress: number }> = ({ progress }) => 
 const PersonalBoardScreen: React.FC = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [bigWinsVisible, setBigWinsVisible] = useState(false);
+  const [dealsVisible, setDealsVisible] = useState(false);
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
   const [activeCategories, setActiveCategories] = useState(['nutrition', 'fitness', 'sleep']);
   const [selectedCategory, setSelectedCategory] = useState<{
@@ -99,6 +101,14 @@ const PersonalBoardScreen: React.FC = () => {
   // Handlers
   const handleMenuPress = () => {
     setSidebarVisible(true);
+  };
+
+  const handleDealsPress = () => {
+    setDealsVisible(true);
+  };
+
+  const handleCloseDeals = () => {
+    setDealsVisible(false);
   };
 
   const handleCloseSidebar = () => {
@@ -140,6 +150,13 @@ const PersonalBoardScreen: React.FC = () => {
     setSelectedCategory(null);
   };
 
+  // DealsScreen anzeigen wenn sichtbar
+  if (dealsVisible) {
+    return (
+      <DealsScreen onBack={handleCloseDeals} />
+    );
+  }
+
   // BigWinsScreen anzeigen wenn sichtbar
   if (bigWinsVisible && selectedCategory) {
     return (
@@ -163,6 +180,11 @@ const PersonalBoardScreen: React.FC = () => {
           {/* Floating Sidebar Button */}
           <TouchableOpacity onPress={handleMenuPress} style={styles.floatingMenuButton}>
             <IconSymbol name="line.3.horizontal" size={24} color={Colors.text.dark} />
+          </TouchableOpacity>
+
+          {/* Floating Deals Button */}
+          <TouchableOpacity onPress={handleDealsPress} style={styles.floatingDealsButton}>
+            <IconSymbol name="tag.fill" size={22} color={Colors.primary} />
           </TouchableOpacity>
 
           {/* Sidebar */}
@@ -242,6 +264,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     left: 20,
+    zIndex: 100,
+    padding: 12,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  floatingDealsButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
     zIndex: 100,
     padding: 12,
     borderRadius: 16,
