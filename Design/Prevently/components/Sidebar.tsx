@@ -70,6 +70,17 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, onMenuItemPress }) 
               
               <TouchableOpacity 
                 style={styles.menuItem} 
+                onPress={() => handleMenuItemPress('Über Prevently')}
+              >
+                <View style={styles.menuItemIcon}>
+                  <IconSymbol name="heart.fill" size={20} color={Colors.primary} />
+                </View>
+                <Text style={styles.menuItemText}>Über Prevently</Text>
+                <IconSymbol name="chevron.right" size={16} color={Colors.text.secondary} />
+              </TouchableOpacity>
+              
+              <TouchableOpacity 
+                style={styles.menuItem} 
                 onPress={() => handleMenuItemPress('Einstellungen')}
               >
                 <View style={styles.menuItemIcon}>

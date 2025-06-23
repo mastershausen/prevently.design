@@ -15,8 +15,18 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import Sidebar from './Sidebar';
 import BigWinsScreen from './BigWinsScreen';
 import DealsScreen from './DealsScreen';
+import AboutScreen from './AboutScreen';
 import CategorySelectionModal from './CategorySelectionModal';
 import ExpandableBottomSheet from './ExpandableBottomSheet';
+
+interface CategoryData {
+  id: string;
+  title: string;
+  icon: string;
+  color: string;
+  progress: number;
+  description: string;
+}
 
 // Premium Radial Progress Circle Component
 const PremiumRadialProgress: React.FC<{ progress: number }> = ({ progress }) => {
@@ -84,19 +94,14 @@ const PremiumRadialProgress: React.FC<{ progress: number }> = ({ progress }) => 
 
 const PersonalBoardScreen: React.FC = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [categoryModalVisible, setCategoryModalVisible] = useState(false);
   const [bigWinsVisible, setBigWinsVisible] = useState(false);
   const [dealsVisible, setDealsVisible] = useState(false);
-  const [categoryModalVisible, setCategoryModalVisible] = useState(false);
+  const [aboutVisible, setAboutVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryData | null>(null);
+  const [activeCategoriesCount, setActiveCategoriesCount] = useState(3);
   const [activeCategories, setActiveCategories] = useState(['nutrition', 'fitness', 'sleep']);
-  const [selectedCategory, setSelectedCategory] = useState<{
-    id: string;
-    title: string;
-    icon: string;
-    color: string;
-    progress: number;
-  } | null>(null);
   const preventionScore = 72;
-  const activeCategoriesCount = activeCategories.length; // Dynamisch basierend auf State
 
   // Handlers
   const handleMenuPress = () => {
@@ -130,18 +135,16 @@ const PersonalBoardScreen: React.FC = () => {
   };
 
   const handleMenuItemPress = (item: string) => {
-    console.log(`${item} pressed`);
-    setSidebarVisible(false);
+    if (item === 'Deals') {
+      setDealsVisible(true);
+    } else if (item === 'Über Prevently') {
+      setAboutVisible(true);
+    }
+    // Weitere Menu Items können hier hinzugefügt werden
   };
 
-  const handleTilePress = (categoryData: {
-    id: string;
-    title: string;
-    icon: string;
-    color: string;
-    progress: number;
-  }) => {
-    setSelectedCategory(categoryData);
+  const handleTilePress = (category: CategoryData) => {
+    setSelectedCategory(category);
     setBigWinsVisible(true);
   };
 
@@ -150,10 +153,21 @@ const PersonalBoardScreen: React.FC = () => {
     setSelectedCategory(null);
   };
 
+  const handleCloseAbout = () => {
+    setAboutVisible(false);
+  };
+
   // DealsScreen anzeigen wenn sichtbar
   if (dealsVisible) {
     return (
       <DealsScreen onBack={handleCloseDeals} />
+    );
+  }
+
+  // AboutScreen anzeigen wenn sichtbar
+  if (aboutVisible) {
+    return (
+      <AboutScreen onBack={handleCloseAbout} />
     );
   }
 
